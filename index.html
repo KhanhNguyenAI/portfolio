@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - NGUYEN VAN TUAN KHANH</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cvBlue: '#3d6492',
+                        cvLightBlue: '#f2f6fa',
+                        cvTextDark: '#333333',
+                        cvTextGray: '#4a4a4a',
+                        cvDotGray: '#d1d5db',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts for Japanese text -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Print styles to ensure it looks good when printed to PDF */
+        @media print {
+            body {
+                background-color: white !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            .cv-container {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+
+        /* Custom square bullet for lists */
+        .list-square-custom li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .list-square-custom li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.4rem;
+            width: 0.4rem;
+            height: 0.4rem;
+            background-color: #3d6492;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200 py-10 flex justify-center text-sm">
+
+    <!-- CV Main Container (A4 Proportions) -->
+    <div
+        class="cv-container w-[210mm] min-h-[297mm] bg-white shadow-2xl flex relative overflow-hidden text-cvTextDark leading-relaxed">
+
+        <!-- LEFT COLUMN (Sidebar) -->
+        <div class="w-[35%] bg-cvLightBlue relative flex flex-col z-10 pb-20">
+
+            <!-- Top Dark Blue Shape -->
+            <div class="absolute top-0 left-0 w-full h-56 bg-cvBlue z-0"
+                style="clip-path: polygon(0 0, 100% 0, 100% 75%, 0% 100%);"></div>
+
+            <!-- Header Content -->
+            <div class="relative z-10 pt-10 flex flex-col items-center px-4">
+                <h1 class="text-white font-bold text-[22px] text-center leading-snug tracking-wide uppercase">
+                    NGUYEN VAN TUAN<br>KHANH
+                </h1>
+
+                <!-- Profile Image -->
+                <!-- Thay thế src bằng đường dẫn ảnh thật của bạn -->
+                <div
+                    class="mt-6 w-36 h-36 rounded-full overflow-hidden border-2 border-transparent relative bg-white shadow-sm flex-shrink-0">
+                    <img src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg"
+                        alt="Profile Photo" class="w-full h-full object-cover object-top">
+                </div>
+            </div>
+
+            <!-- Left Column Content Container -->
+            <div class="px-6 mt-8 flex-grow flex flex-col gap-6 relative z-10">
+
+                <!-- Personal Details -->
+                <div>
+                    <h2 class="text-cvBlue text-xl font-normal mb-3 pb-1 border-b border-gray-300">Personal details</h2>
+                    <ul class="flex flex-col gap-3 text-sm text-cvTextGray">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-user text-cvBlue mt-1 w-4 text-center"></i>
+                            <span class="font-medium">NGUYEN VAN TUAN KHANH</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-envelope text-cvBlue mt-1 w-4 text-center"></i>
+                            <span class="break-all">9.7nguyenvantuankhanh@gmail.com</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-phone text-cvBlue mt-1 w-4 text-center"></i>
+                            <span>070-4741-1506</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-home text-cvBlue mt-1 w-4 text-center"></i>
+                            <span>東京都福生市武蔵野台1-3-9東福生マンション502 197-0013</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Skills -->
+                <div>
+                    <h2 class="text-cvBlue text-xl font-normal mb-3 pb-1 border-b border-gray-300">Skills</h2>
+                    <div class="flex flex-col gap-2 text-sm font-medium">
+                        <!-- Skill Item -->
+                        <div class="flex justify-between items-center">
+                            <span>Python</span>
+
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>JavaScript</span>
+  
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>TypeScript</span>
+           
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>AWS,GCP,AZURE</span>
+            
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>SQL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div>
+                    <h2 class="text-cvBlue text-xl font-normal mb-3 pb-1 border-b border-gray-300">Languages</h2>
+                    <div class="flex flex-col gap-2 text-sm font-medium">
+                        <div class="flex justify-between items-center">
+                            <span>English</span>
+                            <div class="flex gap-1">
+                                B1
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Japan</span>
+                            <div class="flex gap-1">
+                               N2
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Vietnam</span>
+         
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hobbies -->
+                <div>
+                    <h2 class="text-cvBlue text-xl font-normal mb-3 pb-1 border-b border-gray-300">Hobbies</h2>
+                    <ul class="list-square-custom text-sm font-medium text-cvTextDark flex flex-col gap-1">
+                        <li>Traveling</li>
+                        <li>Photography</li>
+                        <li>Reading</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Dark Blue Shape -->
+            <div class="absolute bottom-0 left-0 w-full h-12 bg-cvBlue z-0"
+                style="clip-path: polygon(0 40%, 100% 100%, 0 100%);"></div>
+        </div>
+
+        <!-- RIGHT COLUMN (Main Content) -->
+        <div class="w-[65%] bg-white py-10 px-10 flex flex-col gap-6">
+
+            <!-- Profile -->
+            <section>
+                <h2 class="text-cvBlue text-[22px] font-normal mb-3 pb-1 border-b border-gray-200">Profile</h2>
+                <p class="text-cvTextDark leading-relaxed text-[13px] text-justify">
+          社会に貢献したいという思いは、多くの人が抱く願いだと考えております。
+私がIT業界を志望した理由も、社会に価値を提供できる存在になりたいという思いからです。
+特にシステム分野および人工知能（AI）に強い関心を持っており、これらの分野は現在のテクノロジー社会を理解するだけでなく、未来を形作る重要な技術であると感じています。
+将来的には、技術を通じて社会に実質的な価値を提供できるエンジニアを目指しております。      </p>
+            </section>
+
+            <!-- Education -->
+            <section>
+                <h2 class="text-cvBlue text-[22px] font-normal mb-3 pb-1 border-b border-gray-200">Education</h2>
+
+                <div class="mb-4">
+                    <div class="text-right text-sm font-semibold mb-1">Apr 2023 - Mar 2025</div>
+                    <div class="text-[14px]">東京平田日本語学院, 東京</div>
+                </div>
+
+                <div>
+                    <div class="text-right text-sm font-semibold mb-1">Apr 2025 - Apr 2027</div>
+                    <div class="text-[14px]">日本工学院八王子専門学校, 東京</div>
+                    <div class="text-[14px]">AIシステム科</div>
+                </div>
+            </section>
+
+            <!-- Certificates -->
+            <section>
+                <h2 class="text-cvBlue text-[22px] font-normal mb-3 pb-1 border-b border-gray-200">Certificates</h2>
+
+                <div class="flex flex-col gap-3 text-[14px]">
+                    <div class="flex justify-between items-start">
+                        <div>PythonZen & PEP 8 検定試験</div>
+                        <div class="font-semibold text-right whitespace-nowrap ml-4">Dec 2025</div>
+                    </div>
+
+                    <div class="flex justify-between items-start">
+                        <div>Gemini Certified Student</div>
+                        <div class="font-semibold text-right whitespace-nowrap ml-4">Dec 2025</div>
+                    </div>
+
+                    <div class="flex justify-between items-start">
+                        <div>AIパスポート</div>
+                        <div class="font-semibold text-right whitespace-nowrap ml-4">Oct 2025</div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-start">
+                            <div>基本情報技術者試験</div>
+                            <div class="font-semibold text-right whitespace-nowrap ml-4">Jan 2026</div>
+                        </div>
+                        <div class="mt-1">
+                            A科学：515点 - B科学：605点
+                            
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-start">
+                            <div>ITパスポート : 645点</div>
+                            <div class="font-semibold text-right whitespace-nowrap ml-4">Feb 2026</div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements -->
+            <section>
+                <h2 class="text-cvBlue text-[22px] font-normal mb-3 pb-1 border-b border-gray-200">Achievements</h2>
+                <div class="text-[13px] leading-relaxed flex flex-col gap-2">
+                    <p>
+                        ><b>第26回全日本パラ・パワーリフティング国際招待選手権大会のエンターテインメントアプリ</b>の保守プロジェクトに参加し、ゲームのUI保守および機能追加・改修を担当しました。<br>
+                        
+                        <span>GITHUB :</span><a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank"
+                            class="font-bold underline text-cvTextDark hover:text-cvBlue transition-colors">
+                            KhanhNguyenAI/Para-powerlifting-2026</a>
+                    </p>
+                    <p>
+                        ><b>岡山モノづくり:</b><br>
+                        令和7年岡山モノづくり学生アイデア・デザインコンテストにて優秀賞を受賞。<br>
+                        <a href="https://drive.google.com/file/d/1zeMQlU7nZcQ9DbzZTisiSlr7V7vTvO0F/view?usp=sharing"
+                            class="break-words hover:text-cvBlue transition-colors"
+                            target="_blank">https://drive.google.com/file/d/1zeMQlU7nZcQ9DbzZTisiSlr7V7vTvO0F/view?usp=sharing</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Courses -->
+            <section>
+                <h2 class="text-cvBlue text-[22px] font-normal mb-3 pb-1 border-b border-gray-200">Courses</h2>
+                <div class="flex flex-col gap-4 text-[14px]">
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-start">
+                            <div class="font-medium uppercase tracking-wide">MACHINE LEARNING FOR DATA SCIENCE</div>
+                            <div class="font-semibold text-right whitespace-nowrap ml-4">May 2025</div>
+                        </div>
+                        <div>
+                            <a href="#" class="underline hover:text-cvBlue transition-colors">先生Viet Nguyen |
+                                LinkedIn</a>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="flex justify-between items-start">
+                            <div class="font-medium uppercase tracking-wide">DEEP LEARNING FOR COMPUTER VISION</div>
+                            <div class="font-semibold text-right whitespace-nowrap ml-4">Aug 2025</div>
+                        </div>
+                        <div>
+                            <a href="#" class="underline hover:text-cvBlue transition-colors">先生Viet Nguyen |
+                                LinkedIn</a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
