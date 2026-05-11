@@ -1,455 +1,1360 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV - NGUYEN VAN TUAN KHANH</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        cvBlue: '#2c4a70',
-                        cvAccent: '#3d6492',
-                        cvLightBlue: '#f8fafc',
-                        cvTextDark: '#1e293b',
-                        cvTextGray: '#475569',
-                        cvBorder: '#e2e8f0',
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans JP"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        /* ── Screen-only enhancements ── */
-        @media screen {
-            .cv-container {
-                animation: fadeUp 0.5s ease both;
-            }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-            @keyframes fadeUp {
-                from { opacity: 0; transform: translateY(16px); }
-                to   { opacity: 1; transform: translateY(0); }
-            }
+    :root {
+        --navy: #0d1b2e; --navy2: #152540; --blue: #1a3a6b;
+        --accent: #2563eb; --sky: #38bdf8; --gold: #f59e0b;
+        --white: #ffffff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+    }
 
-            .card-hover {
-                transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-            }
-            .card-hover:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 18px rgba(44,74,112,0.13);
-                border-color: #3d6492;
-            }
+    body {
+        background: linear-gradient(135deg, #0d1b2e 0%, #1a3a6b 50%, #0d1b2e 100%);
+        min-height: 100vh;
+        display: flex; flex-direction: column; align-items: center;
+        padding: 40px 20px;
+        font-family: 'Noto Sans JP', 'Inter', sans-serif;
+    }
 
-            .skill-tag {
-                transition: background 0.15s ease, color 0.15s ease;
-            }
-            .skill-tag:hover {
-                background: #2c4a70;
-                color: #fff;
-                border-color: #2c4a70;
-            }
+    /* ═══════════════ SLIDE ENGINE (Cover) ═══════════════ */
+    .book-wrapper {
+        position: relative;
+        width: 210mm;
+    }
 
-            .link-hover {
-                transition: color 0.15s ease;
-            }
-            .link-hover:hover {
-                color: #2c4a70;
-            }
-        }
+    .book-scene {
+        position: relative;
+        overflow: hidden;
+        width: 210mm;
+        min-height: 297mm;
+        border-radius: 16px;
+        box-shadow: 0 40px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.05);
+    }
 
-        /* Skill bar fill */
-        .skill-bar-track {
-            background: #e2e8f0;
-            border-radius: 9999px;
-            height: 5px;
-            overflow: hidden;
-        }
-        .skill-bar-fill {
-            height: 100%;
-            border-radius: 9999px;
-            background: linear-gradient(90deg, #2c4a70, #3d6492);
-        }
+    .page-slide {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        min-height: 297mm;
+        will-change: transform;
+    }
 
-        /* ── Print ── */
-        @media print {
-            body {
-                background-color: white !important;
-                padding: 0 !important;
-            }
-            .cv-container {
-                box-shadow: none !important;
-                margin: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                animation: none !important;
-            }
-            .no-print { display: none; }
-        }
+    /* p1 always stays — p2/p3 slide over */
+    .page-slide.p1 { transform: translateX(0); z-index: 1; }
+    .page-slide.p2 {
+        transform: translateX(100%);
+        z-index: 2;
+        transition: transform .55s cubic-bezier(.25,.46,.45,.94);
+    }
+    .page-slide.p3 {
+        transform: translateX(100%);
+        z-index: 3;
+        transition: transform .55s cubic-bezier(.25,.46,.45,.94);
+    }
+    .book-scene.on-p2 .page-slide.p2 { transform: translateX(0); }
+    .book-scene.on-p3 .page-slide.p2 { transform: translateX(-100%); }
+    .book-scene.on-p3 .page-slide.p3 { transform: translateX(0); }
 
-        section { page-break-inside: avoid; }
+    /* ── Circular nav buttons ── */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 54px; height: 54px;
+        border-radius: 50%;
+        border: none; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; color: white;
+        background: linear-gradient(135deg, var(--accent), #1d4ed8);
+        box-shadow: 0 6px 24px rgba(37,99,235,.5);
+        transition: transform .25s, box-shadow .25s, opacity .3s;
+        z-index: 20;
+    }
+    .nav-btn:hover {
+        transform: translateY(-50%) scale(1.12);
+        box-shadow: 0 10px 32px rgba(37,99,235,.7);
+    }
+    .nav-btn.next-btn { right: -74px; }
+    .nav-btn.back-btn { left: -74px; opacity: 0; pointer-events: none; }
+    .nav-btn.back-btn.show { opacity: 1; pointer-events: auto; }
+    .nav-btn.next-btn.hide { opacity: 0; pointer-events: none; }
+
+    /* Pulse on next button */
+    @keyframes pulse { 0%,100%{box-shadow:0 6px 24px rgba(37,99,235,.5)} 50%{box-shadow:0 6px 24px rgba(37,99,235,.5),0 0 0 10px rgba(37,99,235,.15)} }
+    .nav-btn.next-btn:not(.hide) { animation: pulse 2.5s ease-in-out infinite; }
+    .nav-btn.next-btn:hover { animation: none; }
+
+    /* ── Page dots ── */
+    .page-dots {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        margin-top: 18px;
+    }
+    .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: rgba(255,255,255,.25);
+        transition: all .35s; cursor: pointer;
+    }
+    .dot.active { width: 22px; border-radius: 4px; background: var(--accent); }
+
+    /* ═══════════════ PAGE 1 — CV STYLES ═══════════════ */
+    .cv {
+        width: 100%; min-height: 297mm;
+        display: flex; background: var(--white);
+        overflow: hidden; position: relative;
+        animation: slideUp .6s cubic-bezier(.16,1,.3,1) both;
+        border-radius: 16px;
+    }
+    @keyframes slideUp { from{opacity:0;transform:translateY(24px) scale(.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    .sidebar { width:36%; background:linear-gradient(170deg,#0d1b2e 0%,#152540 40%,#1a3058 100%); display:flex; flex-direction:column; position:relative; overflow:hidden; border-radius:16px 0 0 16px; }
+    .sidebar::before { content:''; position:absolute; inset:0; pointer-events:none; background-image:radial-gradient(circle at 20% 20%,rgba(37,99,235,.18) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(56,189,248,.1) 0%,transparent 50%); }
+    .hero { padding:40px 28px 32px; text-align:center; position:relative; border-bottom:1px solid rgba(255,255,255,.07); }
+    .hero::after { content:''; position:absolute; bottom:-1px; left:50%; transform:translateX(-50%); width:60px; height:3px; background:linear-gradient(90deg,var(--accent),var(--sky)); border-radius:2px; }
+    .avatar-ring { display:inline-block; padding:3px; border-radius:50%; margin-bottom:16px; background:linear-gradient(135deg,var(--accent),var(--sky)); box-shadow:0 0 30px rgba(37,99,235,.4); }
+    .avatar-ring img { width:110px; height:110px; border-radius:50%; object-fit:cover; display:block; border:3px solid var(--navy); }
+    .hero-name { font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:var(--white); letter-spacing:1.5px; text-transform:uppercase; line-height:1.3; margin-bottom:10px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(37,99,235,.25); border:1px solid rgba(37,99,235,.5); color:var(--sky); font-size:10px; font-weight:600; letter-spacing:.8px; padding:4px 12px; border-radius:20px; }
+    .sidebar-body { padding:24px 24px 32px; display:flex; flex-direction:column; gap:24px; position:relative; z-index:1; }
+    .s-ttl { font-size:9.5px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--sky); margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+    .s-ttl::after { content:''; flex:1; height:1px; background:rgba(56,189,248,.2); }
+    .contact-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .contact-list li { display:flex; align-items:flex-start; gap:10px; font-size:11.5px; color:rgba(255,255,255,.7); line-height:1.5; }
+    .contact-list .icon { width:26px; height:26px; border-radius:7px; background:rgba(37,99,235,.2); border:1px solid rgba(37,99,235,.35); display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--sky); flex-shrink:0; margin-top:1px; }
+    .contact-list a { color:rgba(255,255,255,.85); text-decoration:none; }
+    .contact-list a:hover { color:var(--sky); }
+    .chip-grid { display:flex; flex-wrap:wrap; gap:6px; }
+    .chip { font-size:10.5px; font-weight:500; padding:4px 10px; border-radius:6px; background:rgba(37,99,235,.15); border:1px solid rgba(37,99,235,.3); color:rgba(255,255,255,.85); cursor:default; transition:all .15s; }
+    .chip:hover { background:rgba(37,99,235,.35); border-color:var(--sky); color:var(--white); }
+    .proj-card { display:block; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:10px 12px; text-decoration:none; transition:all .2s; margin-bottom:8px; }
+    .proj-card:last-child { margin-bottom:0; }
+    .proj-card:hover { background:rgba(37,99,235,.18); border-color:rgba(37,99,235,.5); transform:translateX(3px); }
+    .proj-card h3 { font-size:11px; font-weight:700; color:var(--white); margin-bottom:2px; }
+    .proj-card p  { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:4px; }
+    .proj-card span { font-size:9.5px; color:var(--sky); display:flex; align-items:center; gap:4px; }
+    .lang-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:9px; padding:8px 12px; margin-bottom:6px; transition:all .15s; }
+    .lang-row:last-child { margin-bottom:0; }
+    .lang-row:hover { background:rgba(37,99,235,.15); border-color:rgba(37,99,235,.4); }
+    .lang-row .lname { font-size:12px; font-weight:600; color:rgba(255,255,255,.9); }
+    .lbadge { font-size:10px; font-weight:700; padding:2px 9px; border-radius:20px; }
+    .lbadge.n2 { background:var(--accent); color:#fff; }
+    .lbadge.b1 { background:rgba(56,189,248,.25); color:var(--sky); border:1px solid var(--sky); }
+    .lbadge.nat { color:rgba(255,255,255,.4); font-style:italic; font-weight:400; }
+    .hobby-tag { font-size:10.5px; padding:4px 10px; border-radius:20px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.7); cursor:default; }
+    .main { width:64%; display:flex; flex-direction:column; }
+    .topbar { height:4px; background:linear-gradient(90deg,var(--accent) 0%,var(--sky) 50%,var(--gold) 100%); }
+    .mbody { padding:32px 36px 40px; display:flex; flex-direction:column; gap:28px; flex:1; }
+    .sec-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .sec-icon { width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,var(--accent),#1d4ed8); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; flex-shrink:0; box-shadow:0 4px 10px rgba(37,99,235,.35); }
+    .sec-title { font-family:'Inter',sans-serif; font-size:13px; font-weight:800; color:var(--navy); text-transform:uppercase; letter-spacing:1.2px; }
+    .sec-line { flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
+    .profile-text { font-size:12.5px; line-height:1.85; color:var(--muted); background:linear-gradient(135deg,#f8faff,#f0f4ff); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:14px 16px; }
+    .timeline { display:flex; flex-direction:column; }
+    .tl-item { display:flex; gap:14px; padding-bottom:20px; }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-left { display:flex; flex-direction:column; align-items:center; width:14px; }
+    .tl-dot { width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid white; box-shadow:0 0 0 2px var(--accent); flex-shrink:0; margin-top:3px; }
+    .tl-dot.m { background:var(--muted); box-shadow:0 0 0 2px var(--muted); }
+    .tl-line { flex:1; width:1px; background:linear-gradient(180deg,var(--border),transparent); margin-top:4px; }
+    .tl-content { flex:1; }
+    .tl-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:3px; gap:8px; }
+    .tl-school { font-size:13px; font-weight:700; color:var(--text); }
+    .tl-date { font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+    .tl-date.cur { background:rgba(37,99,235,.1); color:var(--accent); border:1px solid rgba(37,99,235,.2); }
+    .tl-date.old { background:#f1f5f9; color:var(--muted); border:1px solid var(--border); }
+    .tl-dept { font-size:12px; color:var(--muted); }
+    .cert-grid { display:flex; flex-direction:column; gap:8px; }
+    .cert-card { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:#fafbff; border:1px solid var(--border); border-radius:10px; transition:all .18s; }
+    .cert-card:hover { border-color:var(--accent); box-shadow:0 4px 12px rgba(37,99,235,.1); transform:translateX(3px); }
+    .cname { font-size:12.5px; font-weight:600; color:var(--text); }
+    .cmeta { text-align:right; }
+    .cdate { font-size:10.5px; font-weight:700; color:var(--accent); display:block; }
+    .cscore { font-size:10px; color:var(--muted); }
+    .ach { border-radius:12px; padding:14px 16px; transition:all .2s; }
+    .ach:hover { transform:translateY(-2px); }
+    .ach.blue  { background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #bfdbfe; border-left:4px solid var(--accent); }
+    .ach.amber { background:linear-gradient(135deg,#fffbeb,#fef3c7); border:1px solid #fde68a; border-left:4px solid var(--gold); }
+    .ach-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .ach-desc  { font-size:11.5px; color:var(--muted); margin-bottom:8px; line-height:1.5; }
+    .ach-link  { font-size:10.5px; color:var(--accent); text-decoration:none; display:inline-flex; align-items:center; gap:5px; font-weight:600; }
+    .ach-link:hover { text-decoration:underline; }
+    .course-card { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 14px; background:white; border:1px solid var(--border); border-radius:10px; gap:10px; transition:all .18s; }
+    .course-card:hover { border-color:var(--accent); box-shadow:0 4px 12px rgba(37,99,235,.08); }
+    .crs-name  { font-size:11.5px; font-weight:700; color:var(--text); text-transform:uppercase; letter-spacing:.3px; margin-bottom:4px; }
+    .crs-instr { font-size:10.5px; color:var(--muted); display:flex; align-items:center; gap:5px; }
+    .crs-instr a { color:var(--accent); font-weight:600; text-decoration:none; }
+    .crs-instr a:hover { text-decoration:underline; }
+    .crs-date  { font-size:10px; font-weight:600; background:#f1f5f9; border:1px solid var(--border); padding:2px 8px; border-radius:20px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+
+    /* ═══════════════ PAGE 2 — JOURNEY STYLES ═══════════════ */
+    .journey { width:100%; min-height:297mm; background:#fdfaf5; display:flex; flex-direction:column; overflow:hidden; border-radius:16px; }
+    .j-hero { background:linear-gradient(160deg,#1a0a0a 0%,#2d1010 45%,#1a1a2e 100%); padding:32px 36px 28px; position:relative; overflow:hidden; border-radius:16px 16px 0 0; }
+    .j-hero::after { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 80% 50%,rgba(192,57,43,.15) 0%,transparent 60%),radial-gradient(circle at 10% 80%,rgba(37,99,235,.1) 0%,transparent 40%); pointer-events:none; }
+    .j-hero::before { content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%; border:1px solid rgba(192,57,43,.2); box-shadow:0 0 0 40px rgba(192,57,43,.04),0 0 0 80px rgba(192,57,43,.02); pointer-events:none; }
+    .j-eyebrow { font-size:9.5px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:8px; display:flex; align-items:center; gap:10px; position:relative; z-index:1; }
+    .j-eyebrow::before { content:''; display:inline-block; width:28px; height:1px; background:rgba(255,255,255,.25); }
+    .j-hero-title { font-family:'Noto Serif JP',serif; font-size:34px; font-weight:700; color:white; line-height:1.15; margin-bottom:6px; position:relative; z-index:1; }
+    .j-hero-title em { color:#e74c3c; font-style:normal; }
+    .j-hero-sub { font-size:11.5px; color:rgba(255,255,255,.45); letter-spacing:.8px; position:relative; z-index:1; }
+    .j-content { display:flex; flex:1; }
+    .j-story { width:52%; padding:22px 20px 20px 32px; display:flex; flex-direction:column; gap:0; }
+    .j-item { display:flex; gap:13px; padding-bottom:16px; }
+    .j-item:last-child { padding-bottom:0; }
+    .j-dot-col { display:flex; flex-direction:column; align-items:center; width:16px; flex-shrink:0; }
+    .j-dot { width:13px; height:13px; border-radius:50%; border:2px solid white; flex-shrink:0; margin-top:2px; }
+    .j-dot.c1{background:#e74c3c;box-shadow:0 0 0 2px #e74c3c} .j-dot.c2{background:#e67e22;box-shadow:0 0 0 2px #e67e22} .j-dot.c3{background:#27ae60;box-shadow:0 0 0 2px #27ae60} .j-dot.c4{background:#2980b9;box-shadow:0 0 0 2px #2980b9} .j-dot.c5{background:#8e44ad;box-shadow:0 0 0 2px #8e44ad}
+    .j-vline { flex:1; width:1px; background:linear-gradient(180deg,#e5e7eb,transparent); margin-top:4px; }
+    .j-body { flex:1; }
+    .j-tag { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px; }
+    .j-tag.t1{color:#e74c3c} .j-tag.t2{color:#e67e22} .j-tag.t3{color:#27ae60} .j-tag.t4{color:#2980b9} .j-tag.t5{color:#8e44ad}
+    .j-head { font-size:12px; font-weight:700; color:#1a1a1a; margin-bottom:4px; }
+    .j-text { font-size:12px; color:#6b7280; line-height:1.75; }
+    .j-visual { width:48%; padding:18px 24px 18px 10px; display:flex; flex-direction:column; gap:10px; }
+    .pgrid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .pc { border-radius:9px; overflow:hidden; cursor:pointer; position:relative; box-shadow:0 5px 18px rgba(0,0,0,.13); transition:box-shadow .3s; }
+    .pc:hover { box-shadow:0 10px 28px rgba(0,0,0,.22); z-index:5; }
+    .pc img { width:100%; display:block; object-fit:cover; transition:transform .5s; }
+    .pc:hover img { transform:scale(1.06); }
+    .pc-ov { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .3s; display:flex; align-items:center; justify-content:center; }
+    .pc:hover .pc-ov { background:rgba(0,0,0,.22); }
+    .pc-ov i { color:white; font-size:18px; opacity:0; transition:opacity .3s; }
+    .pc:hover .pc-ov i { opacity:1; }
+    .pc.wide { grid-column:span 2; }
+    @keyframes fa{0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-9px) rotate(-2deg)}}
+    @keyframes fb{0%,100%{transform:translateY(0) rotate(1.5deg)} 50%{transform:translateY(-11px) rotate(1.5deg)}}
+    @keyframes fc{0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-7px) rotate(-1deg)}}
+    @keyframes fd{0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-10px) rotate(2deg)}}
+    @keyframes fe{0%,100%{transform:translateY(0) rotate(-1.5deg)} 50%{transform:translateY(-8px) rotate(-1.5deg)}}
+    .fa{animation:fa 4.2s ease-in-out infinite} .fb{animation:fb 3.8s ease-in-out .5s infinite} .fc{animation:fc 4.5s ease-in-out 1s infinite} .fd{animation:fd 3.6s ease-in-out 1.5s infinite} .fe{animation:fe 4.8s ease-in-out .3s infinite}
+    .j-vid { border-radius:10px; overflow:hidden; position:relative; background:#000; box-shadow:0 6px 20px rgba(0,0,0,.15); }
+    .j-vid video { width:100%; display:block; max-height:148px; object-fit:cover; }
+    .j-vid-lbl { position:absolute; bottom:7px; left:9px; background:rgba(0,0,0,.6); color:white; font-size:9px; font-weight:600; padding:2px 8px; border-radius:4px; letter-spacing:.5px; }
+    .j-close { margin:0 28px 20px 32px; background:linear-gradient(135deg,#1a0a0a,#2d1515); border-radius:12px; padding:15px 20px; color:white; }
+    .j-quote { font-family:'Noto Serif JP',serif; font-size:11.5px; line-height:1.95; color:rgba(255,255,255,.85); border-left:3px solid #e74c3c; padding-left:14px; }
+    .j-sig { margin-top:10px; font-size:10px; color:rgba(255,255,255,.35); text-align:right; }
+
+    /* ═══════════════ PAGE 3 — CAREER STYLES ═══════════════ */
+    .career { width:100%; min-height:297mm; background:#f8f7ff; display:flex; flex-direction:column; overflow:hidden; border-radius:16px; animation:slideUp .6s cubic-bezier(.16,1,.3,1) both; }
+    .ca-hero { background:linear-gradient(160deg,#0f0a2e 0%,#1e1b4b 50%,#0d1433 100%); padding:32px 36px 28px; position:relative; overflow:hidden; border-radius:16px 16px 0 0; }
+    .ca-hero::after { content:''; position:absolute; inset:0; background-image:radial-gradient(circle at 80% 50%,rgba(99,102,241,.18) 0%,transparent 60%),radial-gradient(circle at 10% 80%,rgba(168,85,247,.1) 0%,transparent 40%); pointer-events:none; }
+    .ca-hero::before { content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%; border:1px solid rgba(99,102,241,.2); box-shadow:0 0 0 40px rgba(99,102,241,.04),0 0 0 80px rgba(99,102,241,.02); pointer-events:none; }
+    .ca-eyebrow { font-size:9.5px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:8px; display:flex; align-items:center; gap:10px; position:relative; z-index:1; }
+    .ca-eyebrow::before { content:''; display:inline-block; width:28px; height:1px; background:rgba(255,255,255,.25); }
+    .ca-hero-title { font-family:'Noto Serif JP',serif; font-size:34px; font-weight:700; color:white; line-height:1.15; margin-bottom:6px; position:relative; z-index:1; }
+    .ca-hero-title em { color:#818cf8; font-style:normal; }
+    .ca-hero-sub { font-size:11.5px; color:rgba(255,255,255,.45); letter-spacing:.8px; position:relative; z-index:1; }
+    .ca-content { display:flex; flex:1; }
+    .ca-story { width:52%; padding:22px 20px 20px 32px; display:flex; flex-direction:column; gap:0; }
+    .ca-item { display:flex; gap:13px; padding-bottom:16px; }
+    .ca-item:last-child { padding-bottom:0; }
+    .ca-dot-col { display:flex; flex-direction:column; align-items:center; width:16px; flex-shrink:0; }
+    .ca-dot { width:13px; height:13px; border-radius:50%; border:2px solid white; flex-shrink:0; margin-top:2px; }
+    .ca-dot.c1{background:#6366f1;box-shadow:0 0 0 2px #6366f1} .ca-dot.c2{background:#8b5cf6;box-shadow:0 0 0 2px #8b5cf6} .ca-dot.c3{background:#06b6d4;box-shadow:0 0 0 2px #06b6d4} .ca-dot.c4{background:#10b981;box-shadow:0 0 0 2px #10b981} .ca-dot.c5{background:#f59e0b;box-shadow:0 0 0 2px #f59e0b}
+    .ca-vline { flex:1; width:1px; background:linear-gradient(180deg,#c7d2fe,transparent); margin-top:4px; }
+    .ca-body { flex:1; }
+    .ca-tag { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:3px; }
+    .ca-tag.t1{color:#6366f1} .ca-tag.t2{color:#8b5cf6} .ca-tag.t3{color:#06b6d4} .ca-tag.t4{color:#10b981} .ca-tag.t5{color:#f59e0b}
+    .ca-head { font-size:12px; font-weight:700; color:#1a1a1a; margin-bottom:4px; }
+    .ca-text { font-size:12px; color:#6b7280; line-height:1.75; }
+    .ca-visual { width:48%; padding:18px 24px 18px 10px; display:flex; flex-direction:column; gap:12px; justify-content:center; align-items:center; }
+    .ca-img-placeholder { width:100%; border-radius:14px; background:linear-gradient(135deg,#e0e7ff,#ede9fe); border:2px dashed #a5b4fc; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:#6366f1; font-size:12px; opacity:.6; min-height:200px; }
+    .ca-img-placeholder i { font-size:32px; }
+    .ca-img-slot { width:100%; border-radius:14px; overflow:hidden; box-shadow:0 8px 30px rgba(99,102,241,.15); }
+    .ca-img-slot img { width:100%; display:block; object-fit:cover; }
+    .ca-close { margin:0 28px 20px 32px; background:linear-gradient(135deg,#1e1b4b,#312e81); border-radius:12px; padding:15px 20px; color:white; }
+    .ca-quote { font-family:'Noto Serif JP',serif; font-size:11.5px; line-height:1.95; color:rgba(255,255,255,.85); border-left:3px solid #818cf8; padding-left:14px; }
+    .ca-sig { margin-top:10px; font-size:10px; color:rgba(255,255,255,.35); text-align:right; }
+
+    /* ═══════════════ LIGHTBOX ═══════════════ */
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.92); z-index:9999; align-items:center; justify-content:center; cursor:zoom-out; }
+    .lightbox.on { display:flex; animation:lbin .25s ease; }
+    @keyframes lbin{from{opacity:0}to{opacity:1}}
+    .lightbox img { max-width:90vw; max-height:90vh; border-radius:8px; object-fit:contain; box-shadow:0 20px 60px rgba(0,0,0,.5); animation:lbsc .3s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes lbsc{from{transform:scale(.7)}to{transform:scale(1)}}
+    .lb-x { position:fixed; top:18px; right:22px; color:white; font-size:30px; cursor:pointer; background:none; border:none; opacity:.6; transition:opacity .2s; z-index:10000; }
+    .lb-x:hover { opacity:1; }
+
+    /* ── Thought bubble ── */
+    @keyframes thought-pop {
+        0%, 4%       { opacity:0; transform:scale(0.15) translateY(10px); pointer-events:none; }
+        12%          { opacity:1; transform:scale(1.1) translateY(-4px); }
+        20%, 68%     { opacity:1; transform:scale(1) translateY(0); pointer-events:auto; }
+        80%          { opacity:0; transform:scale(0.8) translateY(6px); }
+        100%         { opacity:0; transform:scale(0.15) translateY(10px); pointer-events:none; }
+    }
+    .thought-bubble {
+        position: absolute;
+        top: 8px; right: 10px;
+        width: 145px;
+        background: #fff;
+        color: #1e293b;
+        font-size: 10px;
+        line-height: 1.75;
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 400;
+        padding: 10px 12px;
+        border-radius: 12px 12px 12px 3px;
+        box-shadow: 0 6px 22px rgba(0,0,0,.22), 0 0 0 1.5px rgba(37,99,235,.18);
+        transform-origin: bottom left;
+        animation: thought-pop 20s cubic-bezier(.34,1.56,.64,1) infinite;
+        z-index: 12;
+    }
+    .thought-bubble::before {
+        content: '💭';
+        display: block;
+        font-size: 11px;
+        margin-bottom: 4px;
+        opacity: .7;
+    }
+    .thought-bubble::after {
+        content: '';
+        position: absolute;
+        bottom: -9px; left: 14px;
+        width: 0; height: 0;
+        border-left: 9px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 9px solid #fff;
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,.1));
+    }
+
+    /* ── More button ── */
+    .more-btn { display:flex; align-items:center; justify-content:center; gap:7px; background:linear-gradient(135deg,#1a0a0a,#2d1010); border:1px solid rgba(231,76,60,.3); color:rgba(255,255,255,.85); font-size:11px; font-weight:600; padding:9px 18px; border-radius:30px; cursor:pointer; transition:all .25s; font-family:inherit; width:100%; letter-spacing:.5px; }
+    .more-btn:hover { background:linear-gradient(135deg,#2d1010,#3d1515); border-color:#e74c3c; color:white; transform:translateY(-1px); box-shadow:0 6px 18px rgba(231,76,60,.25); }
+
+    /* ═══════════════ GALLERY OVERLAY ═══════════════ */
+    .gallery-overlay { display:none; position:fixed; inset:0; z-index:8888; background:#0d0d0d; flex-direction:column; }
+    .gallery-overlay.on { display:flex; animation:lbin .3s ease; }
+    .gal-header { display:flex; align-items:center; justify-content:space-between; padding:18px 28px; background:linear-gradient(90deg,#1a0a0a,#1a1a2e); border-bottom:1px solid rgba(255,255,255,.08); flex-shrink:0; }
+    .gal-title { font-family:'Noto Serif JP',serif; font-size:18px; font-weight:700; color:white; display:flex; align-items:center; gap:10px; }
+    .gal-title span { font-size:11px; font-weight:400; color:rgba(255,255,255,.4); font-family:'Noto Sans JP',sans-serif; }
+    .gal-close { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); color:white; width:38px; height:38px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .gal-close:hover { background:rgba(231,76,60,.3); border-color:#e74c3c; }
+    .gal-body { flex:1; overflow-y:auto; padding:24px 28px; }
+    .gal-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .gal-item { border-radius:10px; overflow:hidden; cursor:pointer; aspect-ratio:1; position:relative; background:#1a1a1a; }
+    .gal-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
+    .gal-item:hover img { transform:scale(1.08); }
+    .gal-item::after { content:'\f00e'; font-family:'Font Awesome 6 Free'; font-weight:900; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; background:rgba(0,0,0,0); transition:background .3s; opacity:0; }
+    .gal-item:hover::after { background:rgba(0,0,0,.35); opacity:1; }
+    .gal-section { margin-bottom:22px; }
+    .gal-sec-label { font-size:9.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:10px; }
+
+    /* ═══════════════ ACHIEVEMENT DETAIL OVERLAY ═══════════════ */
+    .ach-overlay { display:none; position:fixed; inset:0; z-index:9500; background:rgba(0,0,0,.85); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:24px; }
+    .ach-overlay.on { display:flex; animation:lbin .3s ease; }
+    .ach-panel { background:linear-gradient(135deg,#0f1f3d,#162040); border:1px solid rgba(37,99,235,.25); border-radius:20px; max-width:860px; width:100%; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 40px 80px rgba(0,0,0,.6); }
+    .ach-panel-hd { padding:20px 28px; border-bottom:1px solid rgba(37,99,235,.2); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; background:linear-gradient(90deg,rgba(37,99,235,.15),transparent); flex-shrink:0; }
+    .ach-panel-hd-text { flex:1; }
+    .ach-panel-tag { font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--sky); margin-bottom:6px; }
+    .ach-panel-title { font-size:17px; font-weight:800; color:white; font-family:'Noto Sans JP',sans-serif; line-height:1.4; }
+    .ach-panel-close { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); color:white; width:36px; height:36px; border-radius:50%; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; margin-top:2px; }
+    .ach-panel-close:hover { background:rgba(239,68,68,.3); border-color:#ef4444; }
+    .ach-panel-body { flex:1; overflow-y:auto; padding:28px; display:flex; gap:28px; }
+    .ach-panel-text { flex:1; display:flex; flex-direction:column; gap:14px; }
+    .ach-panel-para { font-size:13.5px; line-height:2; color:rgba(255,255,255,.8); font-family:'Noto Sans JP',sans-serif; padding:14px 18px; background:rgba(255,255,255,.04); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; }
+    .ach-panel-para:first-child { border-left-color:var(--sky); }
+    .ach-panel-para:last-child { border-left-color:#8b5cf6; }
+    .ach-panel-img { width:300px; flex-shrink:0; display:flex; flex-direction:column; gap:10px; }
+    .ach-panel-img img { width:100%; border-radius:12px; border:1px solid rgba(255,255,255,.1); box-shadow:0 8px 30px rgba(0,0,0,.4); cursor:zoom-in; transition:transform .2s; }
+    .ach-panel-img img:hover { transform:scale(1.02); }
+    .ach-panel-img-cap { font-size:10px; color:rgba(255,255,255,.35); text-align:center; letter-spacing:.5px; }
+    @media (max-width:680px) {
+        .ach-panel-body { flex-direction:column; }
+        .ach-panel-img { width:100%; }
+        .ach-panel { border-radius:14px; }
+    }
+    /* clickable ach card */
+    .ach.clickable { cursor:pointer; }
+    .ach.clickable:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(37,99,235,.2); }
+
+    /* ═══════════════ KNOWLEDGE BUBBLE ═══════════════ */
+    @keyframes kb-bob  { 0%,100%{transform:translateY(0) rotate(3deg)} 50%{transform:translateY(-14px) rotate(-3deg)} }
+    @keyframes kb-ring { 0%,100%{box-shadow:0 8px 32px rgba(16,185,129,.6),0 0 0 0 rgba(16,185,129,.4)} 60%{box-shadow:0 8px 32px rgba(16,185,129,.6),0 0 0 20px rgba(16,185,129,0)} }
+    .kb-bubble-btn {
+        position: fixed; right: 32px; top: 58%; z-index: 500;
+        width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer;
+        background: radial-gradient(circle at 35% 35%, #34d399, #065f46);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        color: white; font-family: inherit;
+        animation: kb-bob 4s ease-in-out .8s infinite, kb-ring 2.6s ease-out .4s infinite;
+        transition: transform .2s, box-shadow .2s;
+    }
+    .kb-bubble-btn:hover { animation: none; transform: scale(1.18); box-shadow: 0 16px 44px rgba(16,185,129,.8); }
+    .kb-bubble-btn .kb-icon { font-size: 28px; line-height: 1; }
+    .kb-bubble-btn .kb-label { font-size: 7.5px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; opacity: .9; }
+    .kb-bubble-btn::after { content:''; position:absolute; right:90px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:10px solid rgba(16,185,129,.5); }
+
+    .knowledge-overlay { display:none; position:fixed; inset:0; z-index:9000; background:linear-gradient(135deg,#0a1f14 0%,#051a10 100%); flex-direction:column; overflow:hidden; }
+    .knowledge-overlay.on { display:flex; animation:lbin .35s ease; }
+    .kb-hdr { display:flex; align-items:center; justify-content:space-between; padding:16px 28px; flex-shrink:0; border-bottom:1px solid rgba(16,185,129,.2); background:linear-gradient(90deg,rgba(16,185,129,.15),transparent); }
+    .kb-hdr-title { font-family:'Noto Serif JP',serif; font-size:18px; font-weight:700; color:white; display:flex; align-items:center; gap:10px; }
+    .kb-hdr-title span { font-size:11px; font-weight:400; color:rgba(255,255,255,.4); font-family:'Noto Sans JP',sans-serif; }
+    .kb-close-btn { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); color:white; width:38px; height:38px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .kb-close-btn:hover { background:rgba(16,185,129,.3); border-color:#34d399; }
+    .kb-body { flex:1; overflow-y:auto; padding:24px 32px; display:flex; flex-direction:column; gap:16px; }
+    .kb-cat { border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.08); }
+    .kb-cat-hd { display:flex; align-items:center; gap:12px; padding:13px 20px; }
+    .kb-cat-hd-icon { font-size:20px; }
+    .kb-cat-hd-text { flex:1; }
+    .kb-cat-hd-text strong { display:block; font-size:13px; font-weight:700; color:white; letter-spacing:.4px; }
+    .kb-cat-hd-text span { font-size:10.5px; color:rgba(255,255,255,.45); }
+    .kb-cat-body { padding:14px 20px 18px; display:flex; flex-direction:column; gap:14px; background:rgba(0,0,0,.2); }
+    .kb-sub { }
+    .kb-sub-lbl { font-size:9px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; margin-bottom:8px; opacity:.7; }
+    .kb-chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .kb-chip { display:inline-flex; align-items:center; gap:7px; padding:6px 13px; border-radius:8px; font-size:12px; font-weight:500; color:rgba(255,255,255,.9); border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.06); cursor:default; transition:all .18s; }
+    .kb-chip:hover { background:rgba(255,255,255,.12); transform:translateY(-2px); }
+    .kb-chip .kbc-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+    @media (max-width:860px) {
+        .kb-bubble-btn { right:16px; top:auto; bottom:170px; width:68px; height:68px; }
+        .kb-bubble-btn .kb-icon { font-size:22px; }
+        .kb-bubble-btn .kb-label { font-size:7px; }
+        .kb-bubble-btn::after { display:none; }
+        .kb-body { padding:20px 16px; gap:20px; grid-template-columns:1fr; }
+    }
+
+    /* ═══════════════ PROJECT BUBBLE ═══════════════ */
+    @keyframes pj-bob  { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-13px) rotate(-2deg)} }
+    @keyframes pj-ring { 0%,100%{box-shadow:0 8px 32px rgba(234,88,12,.6),0 0 0 0 rgba(234,88,12,.4)} 60%{box-shadow:0 8px 32px rgba(234,88,12,.6),0 0 0 20px rgba(234,88,12,0)} }
+    .pj-bubble-btn {
+        position: fixed; right: 32px; top: 78%; z-index: 500;
+        width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer;
+        background: radial-gradient(circle at 35% 35%, #fb923c, #9a3412);
+        color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        animation: pj-bob 3.8s ease-in-out .4s infinite, pj-ring 2.8s ease-out .6s infinite;
+        transition: transform .2s, box-shadow .2s;
+    }
+    .pj-bubble-btn:hover { animation: none; transform: scale(1.18); box-shadow: 0 16px 44px rgba(234,88,12,.85); }
+    .pj-bubble-btn .pj-icon { font-size: 28px; line-height: 1; }
+    .pj-bubble-btn .pj-label { font-size: 7.5px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; opacity: .9; }
+    .pj-bubble-btn::after { content:''; position:absolute; right:90px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:10px solid rgba(234,88,12,.5); }
+
+    .pj-overlay { display:none; position:fixed; inset:0; z-index:9500; background:rgba(0,0,0,.88); backdrop-filter:blur(7px); align-items:center; justify-content:center; padding:24px; }
+    .pj-overlay.on { display:flex; animation:lbin .3s ease; }
+    .pj-panel { background:linear-gradient(135deg,#1c0e00,#2c1500); border:1px solid rgba(234,88,12,.3); border-radius:20px; max-width:720px; width:100%; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 40px 80px rgba(0,0,0,.6); }
+    .pj-panel-hd { padding:20px 28px; border-bottom:1px solid rgba(234,88,12,.2); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; background:linear-gradient(90deg,rgba(234,88,12,.18),transparent); flex-shrink:0; }
+    .pj-panel-tag { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#fb923c; opacity:.8; margin-bottom:4px; }
+    .pj-panel-title { font-size:15px; font-weight:700; color:#fff; line-height:1.4; }
+    .pj-panel-close { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.7); width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .2s; }
+    .pj-panel-close:hover { background:rgba(234,88,12,.3); color:#fff; }
+    .pj-panel-body { flex:1; overflow-y:auto; padding:28px; display:flex; flex-direction:column; gap:14px; }
+    .pj-panel-para { font-size:13.5px; line-height:2; color:rgba(255,255,255,.82); padding:14px 18px; background:rgba(255,255,255,.04); border-left:3px solid #fb923c; border-radius:0 10px 10px 0; }
+
+    @media (max-width:860px) {
+        .pj-bubble-btn { right:16px; top:auto; bottom:80px; width:68px; height:68px; }
+        .pj-bubble-btn .pj-icon { font-size:22px; }
+        .pj-bubble-btn .pj-label { font-size:7px; }
+        .pj-bubble-btn::after { display:none; }
+        .pj-panel-body { padding:20px 16px; }
+    }
+
+    /* ═══════════════ STATUS BUBBLE ═══════════════ */
+    @keyframes sb-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .status-bubble {
+        position: fixed;
+        left: 22px;
+        top: 42%;
+        width: 210px;
+        background: rgba(255,255,255,.96);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 13px 15px 13px 15px;
+        font-family: 'Noto Sans JP', sans-serif;
+        font-size: 10.5px;
+        line-height: 1.85;
+        color: #1e293b;
+        box-shadow: 0 8px 28px rgba(0,0,0,.14), 0 0 0 1.5px rgba(37,99,235,.12);
+        animation: sb-float 4.5s ease-in-out infinite;
+        z-index: 500;
+        pointer-events: auto;
+        transition: opacity .25s, transform .25s;
+    }
+    .status-bubble.hidden { opacity: 0; pointer-events: none; transform: scale(.85); }
+    .status-bubble::before {
+        content: '💬';
+        display: block;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+    .status-bubble::after {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 28px;
+        width: 0; height: 0;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        border-left: 10px solid rgba(255,255,255,.96);
+    }
+    .sb-close {
+        position: absolute;
+        top: 7px; right: 8px;
+        width: 18px; height: 18px;
+        border-radius: 50%;
+        background: rgba(0,0,0,.08);
+        border: none;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px;
+        color: #64748b;
+        line-height: 1;
+        transition: background .15s, color .15s;
+        padding: 0;
+    }
+    .sb-close:hover { background: rgba(239,68,68,.15); color: #ef4444; }
+    @media (max-width:1080px) { .status-bubble { display: none; } }
+
+    /* ═══════════════ FRIENDS ZONE ═══════════════ */
+    @keyframes fz-bob  { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-16px) rotate(4deg)} }
+    @keyframes fz-ring { 0%,100%{box-shadow:0 8px 32px rgba(142,68,173,.6),0 0 0 0 rgba(142,68,173,.4)} 60%{box-shadow:0 8px 32px rgba(142,68,173,.6),0 0 0 20px rgba(142,68,173,0)} }
+    .fz-bubble-btn {
+        position: fixed; right: 32px; top: 38%; z-index: 500;
+        width: 82px; height: 82px; border-radius: 50%; border: none; cursor: pointer;
+        background: radial-gradient(circle at 35% 35%, #b06be0, #6c3483);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        color: white; font-family: inherit;
+        animation: fz-bob 3.6s ease-in-out infinite, fz-ring 2.4s ease-out infinite;
+        transition: transform .2s, box-shadow .2s;
+    }
+    .fz-bubble-btn:hover { animation: none; transform: scale(1.18); box-shadow: 0 16px 44px rgba(142,68,173,.8); }
+    .fz-bubble-btn .fz-globe { font-size: 28px; line-height: 1; }
+    .fz-bubble-btn .fz-label { font-size: 8px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; opacity: .9; }
+    .fz-bubble-btn::after { content:''; position:absolute; right:90px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:10px solid rgba(142,68,173,.5); }
+
+    .friends-overlay { display:none; position:fixed; inset:0; z-index:9000; background:radial-gradient(ellipse at 40% 40%,#16003a 0%,#060010 70%); flex-direction:column; }
+    .friends-overlay.on { display:flex; animation:lbin .35s ease; }
+    .fz-hdr { display:flex; align-items:center; justify-content:space-between; padding:16px 28px; flex-shrink:0; border-bottom:1px solid rgba(142,68,173,.2); background:linear-gradient(90deg,rgba(108,52,131,.25),transparent); }
+    .fz-hdr-title { font-family:'Noto Serif JP',serif; font-size:18px; font-weight:700; color:white; display:flex; align-items:center; gap:10px; }
+    .fz-hdr-title span { font-size:11px; font-weight:400; color:rgba(255,255,255,.4); font-family:'Noto Sans JP',sans-serif; }
+    .fz-close-btn { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); color:white; width:38px; height:38px; border-radius:50%; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .fz-close-btn:hover { background:rgba(142,68,173,.4); border-color:#9b59b6; }
+    .fz-stage { flex:1; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .fz-stage::before { content:''; position:absolute; inset:0; background-image:radial-gradient(1.5px 1.5px at 8% 12%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(1px 1px at 22% 38%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 55% 8%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 78% 25%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 90% 60%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(1px 1px at 40% 88%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 65% 75%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 15% 70%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 88% 88%,rgba(255,255,255,.3) 0%,transparent 100%); pointer-events:none; }
+    .fz-net { position:relative; width:min(82vw,82vh); height:min(82vw,82vh); }
+    .fz-svg { position:absolute; inset:0; width:100%; height:100%; }
+    .fz-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:7px; z-index:3; }
+    .fz-avatar { width:78px; height:78px; border-radius:50%; object-fit:cover; border:3px solid #9b59b6; box-shadow:0 0 0 6px rgba(142,68,173,.18),0 0 36px rgba(142,68,173,.55); }
+    .fz-center-name { font-size:10px; font-weight:700; color:white; letter-spacing:1.8px; text-transform:uppercase; background:rgba(142,68,173,.35); padding:3px 12px; border-radius:10px; }
+    .fz-bubble { position:absolute; transform:translate(-50%,-50%); cursor:default; z-index:3; }
+    .fz-inner { display:flex; flex-direction:column; align-items:center; gap:5px; transition:transform .3s; }
+    .fz-bubble:hover .fz-inner { transform:scale(1.15); }
+    .fz-flag { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; border:2px solid rgba(255,255,255,.15); }
+    .fz-name { font-size:10.5px; font-weight:600; color:rgba(255,255,255,.88); letter-spacing:.4px; white-space:nowrap; text-shadow:0 1px 6px rgba(0,0,0,.9); }
+    @keyframes fzFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+    /* ═══════════════ PRINT BUTTON ═══════════════ */
+    .print-btn { position:fixed; bottom:24px; right:24px; background:linear-gradient(135deg,var(--accent),#1d4ed8); color:white; border:none; padding:12px 22px; border-radius:30px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px rgba(37,99,235,.45); display:flex; align-items:center; gap:8px; transition:all .2s; font-family:inherit; }
+    .print-btn:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(37,99,235,.55); }
+
+    @media print {
+        body { background:white !important; padding:0 !important; }
+        .book-wrapper { width:210mm; }
+        .book-scene { overflow:visible; min-height:unset; box-shadow:none; border-radius:0; }
+        .page-slide { position:relative; transform:none !important; animation:none !important; }
+        .page-slide.p2, .page-slide.p3 { display:block; page-break-before:always; }
+        .print-btn, .nav-btn, .page-dots, .no-print { display:none !important; }
+        .cv, .journey, .career { border-radius:0; animation:none; }
+    }
+    section { page-break-inside:avoid; }
     </style>
 </head>
+<body>
 
-<body class="bg-slate-200 py-10 flex justify-center text-sm font-sans">
+<div class="book-wrapper">
 
-    <div class="cv-container w-[210mm] min-h-[297mm] bg-white shadow-2xl flex relative overflow-hidden text-cvTextDark">
+  <!-- ── Circular nav buttons ── -->
+  <button class="nav-btn next-btn" id="nextBtn" onclick="slideNext()" title="次のページ">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+  <button class="nav-btn back-btn" id="backBtn" onclick="slideBack()" title="前のページ">
+    <i class="fas fa-chevron-left"></i>
+  </button>
 
-        <!-- ══ LEFT COLUMN ══ -->
-        <div class="w-[35%] bg-cvLightBlue flex flex-col border-r border-cvBorder">
+  <!-- ── Page scene ── -->
+  <div class="book-scene" id="scene">
 
-            <!-- Header -->
-            <div class="pt-12 pb-10 px-6 text-center relative" style="background: linear-gradient(145deg, #1e3a5f 0%, #2c4a70 60%, #3d6492 100%)">
-                <!-- dot pattern -->
-                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 15px 15px;"></div>
-
-                <h1 class="text-white font-bold text-2xl leading-tight tracking-wider uppercase mb-6 relative z-10">
-                    NGUYEN VAN<br>TUAN KHANH
-                </h1>
-
-                <!-- Profile image with glow ring -->
-                <div class="relative inline-block z-10">
-                    <div class="w-36 h-36 rounded-full p-[3px]" style="background: linear-gradient(135deg, #fff 0%, #a8c4e0 100%); box-shadow: 0 0 20px rgba(255,255,255,0.25)">
-                        <div class="w-full h-full rounded-full overflow-hidden bg-white">
-                            <img src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg" alt="Profile"
-                                onerror="this.src='https://ui-avatars.com/api/?name=Khanh+Nguyen&background=3d6492&color=fff&size=200'"
-                                class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Role badge -->
-                <div class="mt-4 relative z-10">
-                    <span class="inline-block bg-white bg-opacity-15 text-white text-[11px] px-3 py-1 rounded-full tracking-wide border border-white border-opacity-30">
-                        AI Engineer Student
-                    </span>
-                </div>
+    <!-- PAGE 1: CV -->
+    <div class="page-slide p1" id="page1">
+      <div class="cv">
+        <div class="sidebar">
+          <div class="hero">
+            <div class="thought-bubble no-print">私は失敗することを恐れていません。本当に怖いのは、自分が後悔してしまうことです。</div>
+            <div class="avatar-ring">
+              <img src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg" alt="Profile"
+                   onerror="this.src='https://ui-avatars.com/api/?name=Khanh+Nguyen&background=1a3a6b&color=fff&size=200'">
             </div>
+            <div class="hero-name">NGUYEN VAN<br>TUAN KHANH</div>
+            <div class="hero-badge"><i class="fas fa-microchip" style="font-size:9px"></i> AI Engineer Student</div>
+          </div>
+          <div class="sidebar-body">
+            <section>
+              <div class="s-ttl"><i class="fas fa-satellite-dish"></i> Contact</div>
+              <ul class="contact-list">
+                <li><div class="icon"><i class="fas fa-envelope"></i></div><a href="mailto:9.7nguyenvantuankhanh@gmail.com" style="word-break:break-all">9.7nguyenvantuankhanh@gmail.com</a></li>
+                <li><div class="icon"><i class="fas fa-phone"></i></div><span>070-4741-1506</span></li>
+                <li><div class="icon"><i class="fas fa-location-dot"></i></div><span>東京都福生市武蔵野台1-3-9<br>東福生マンション502 〒197-0013</span></li>
+                <li><div class="icon"><i class="fab fa-github"></i></div><a href="https://github.com/KhanhNguyenAI" target="_blank">KhanhNguyenAI</a></li>
+              </ul>
+            </section>
+            <section>
+              <div class="s-ttl"><i class="fas fa-code"></i> Skills</div>
+              <div class="chip-grid">
+                <span class="chip">Python</span><span class="chip">AI / NLP</span><span class="chip">JavaScript</span>
+                <span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">SQL</span>
+                <span class="chip">AWS / GCP</span><span class="chip">Firebase</span>
+              </div>
+            </section>
+            <section>
+              <div class="s-ttl"><i class="fab fa-github"></i> Projects</div>
+              <a href="https://github.com/KhanhNguyenAI/book" target="_blank" class="proj-card"><h3>Book Management</h3><p>AI / NLP Search system</p><span><i class="fab fa-github"></i> /book</span></a>
+              <a href="https://github.com/KhanhNguyenAI/oldshop" target="_blank" class="proj-card"><h3>OldShop E-commerce</h3><p>Full-stack React / TypeScript</p><span><i class="fab fa-github"></i> /oldshop</span></a>
+              <a href="https://project-nu-gold.vercel.app/" target="_blank" class="proj-card"><h3>就職サポートアプリ</h3><p>就活管理 Web アプリ</p><span><i class="fab fa-github"></i> /job-support-app</span></a>
+            </section>
+            <section>
+              <div class="s-ttl"><i class="fas fa-language"></i> Languages</div>
+              <div class="lang-row"><span class="lname">Japanese</span><span class="lbadge n2">N2</span></div>
+              <div class="lang-row"><span class="lname">English</span><span class="lbadge b1">B1</span></div>
+              <div class="lang-row"><span class="lname">Vietnamese</span><span class="lbadge nat">Native</span></div>
+            </section>
+            <section>
+              <div class="s-ttl"><i class="fas fa-star"></i> Hobbies</div>
+              <div class="chip-grid">
+                <span class="hobby-tag">心理・思考本の読書</span>
+                <span class="hobby-tag">旅行</span>
+                <span class="hobby-tag">多文化環境での活動</span>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="main">
+          <div class="topbar"></div>
+          <div class="mbody">
+            <section>
+              <div class="sec-head"><div class="sec-icon"><i class="fas fa-user"></i></div><span class="sec-title">Profile</span><div class="sec-line"></div></div>
+              <p class="profile-text">
+                社会に貢献したいという思いは、多くの人が抱く願いだと考えております。<br>
+                私がIT業界を志望した理由も、技術を通じて社会に価値を提供できる存在になりたいと考えたからです。<br>
+                特に、システム開発や人工知能（AI）の分野に強い関心を持っております。<br>
+                これらは単に現在の社会を支える技術ではなく、今後の社会や人々の生活を大きく変えていく重要な技術だと感じています。<br>
+                将来的には、技術力だけでなく、利用する人の立場や課題にも目を向けながら、社会に実質的な価値を提供できるエンジニアを目指しております。
+              </p>
+            </section>
+            <section>
+              <div class="sec-head"><div class="sec-icon"><i class="fas fa-graduation-cap"></i></div><span class="sec-title">Education</span><div class="sec-line"></div></div>
+              <div class="timeline">
+                <div class="tl-item"><div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-row"><span class="tl-school">日本工学院八王子専門学校</span><span class="tl-date cur">Apr 2025 – Apr 2027</span></div><div class="tl-dept">AIシステム科（東京）</div></div></div>
+                <div class="tl-item"><div class="tl-left"><div class="tl-dot m"></div></div><div class="tl-content"><div class="tl-row"><span class="tl-school">東京平田日本語学院</span><span class="tl-date old">Apr 2023 – Mar 2025</span></div><div class="tl-dept">日本語学科（東京）</div></div></div>
+              </div>
+            </section>
+            <section>
+              <div class="sec-head"><div class="sec-icon"><i class="fas fa-award"></i></div><span class="sec-title">Certificates</span><div class="sec-line"></div></div>
+              <div class="cert-grid">
+                <div class="cert-card"><span class="cname">基本情報技術者試験 (FE)</span><div class="cmeta"><span class="cdate">Jan 2026</span><span class="cscore">A: 515 ｜ B: 605</span></div></div>
+                <div class="cert-card"><span class="cname">ITパスポート</span><div class="cmeta"><span class="cdate">Feb 2026</span><span class="cscore">645点</span></div></div>
+                <div class="cert-card"><span class="cname">AI パスポート</span><div class="cmeta"><span class="cdate">Oct 2025</span></div></div>
+              </div>
+            </section>
+            <section>
+              <div class="sec-head"><div class="sec-icon"><i class="fas fa-trophy"></i></div><span class="sec-title">Achievements</span><div class="sec-line"></div></div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div class="ach blue clickable" onclick="openParaDetail()"><div class="ach-title">第26回全日本パラ・パワーリフティング国際招待選手権</div><div class="ach-desc">大会運営支援 Web アプリケーションの開発・ボランティア参加</div><a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank" class="ach-link" onclick="event.stopPropagation()"><i class="fab fa-github"></i> KhanhNguyenAI/Para-powerlifting-2026</a><div style="margin-top:8px;font-size:10px;color:var(--accent);display:flex;align-items:center;gap:4px;font-weight:600"><i class="fas fa-book-open"></i> 詳細を見る</div></div>
+                <div class="ach amber"><div class="ach-title">岡山モノづくり学生アイデア・デザインコンテスト</div><div class="ach-desc">令和7年度 受賞</div><a href="https://drive.google.com/file/d/10T_BKymRZeMz4YGg1k8GmzvpnbvLUQXc/view?usp=sharing" target="_blank" class="ach-link" style="color:#d97706"><i class="fas fa-external-link-alt"></i> View Project Document</a></div>
+              </div>
+            </section>
+            <section>
+              <div class="sec-head"><div class="sec-icon"><i class="fas fa-book-open"></i></div><span class="sec-title">Courses</span><div class="sec-line"></div></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div class="course-card"><div><div class="crs-name">Machine Learning for Data Science</div><div class="crs-instr">Instructor: <a href="https://www.linkedin.com/in/vietnh1009/" target="_blank">Viet Nguyen <i class="fab fa-linkedin" style="font-size:10px"></i></a></div></div><span class="crs-date">May 2025</span></div>
+                <div class="course-card"><div><div class="crs-name">Deep Learning for Computer Vision</div><div class="crs-instr">Instructor: <a href="https://www.linkedin.com/in/vietnh1009/" target="_blank">Viet Nguyen <i class="fab fa-linkedin" style="font-size:10px"></i></a></div></div><span class="crs-date">Aug 2025</span></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div><!-- #page1 -->
 
-            <div class="px-7 py-8 flex flex-col gap-7">
-
-                <!-- Contact -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-address-card"></i> Contact
-                    </h2>
-                    <ul class="space-y-3 text-[12.5px] text-cvTextGray">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-envelope text-cvAccent mt-0.5 w-4"></i>
-                            <a href="mailto:9.7nguyenvantuankhanh@gmail.com" class="break-all link-hover">9.7nguyenvantuankhanh@gmail.com</a>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-phone text-cvAccent mt-0.5 w-4"></i>
-                            <span>070-4741-1506</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt text-cvAccent mt-0.5 w-4"></i>
-                            <span>東京都福生市武蔵野台1-3-9<br>東福生マンション502 〒197-0013</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fab fa-github text-cvAccent mt-0.5 w-4"></i>
-                            <a href="https://github.com/KhanhNguyenAI" target="_blank" class="link-hover text-cvBlue font-medium">KhanhNguyenAI</a>
-                        </li>
-                    </ul>
-                </section>
-
-                <!-- Documents -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-folder-open"></i> Documents
-                    </h2>
-                    <a href="https://drive.google.com/drive/folders/1TeMzTgKKTI0DoguJY5j9Qtg5a0OFrzz_?usp=drive_link"
-                       target="_blank"
-                       class="card-hover flex items-center gap-3 bg-white p-3 rounded-lg border border-cvBorder group">
-                        <i class="fas fa-file-pdf text-red-500 text-lg"></i>
-                        <div>
-                            <p class="text-[11px] font-bold text-cvBlue">履歴書・職務経歴書</p>
-                            <p class="text-[10px] text-cvTextGray">Google Drive</p>
-                        </div>
-                        <i class="fas fa-external-link-alt text-[9px] text-cvTextGray ml-auto"></i>
-                    </a>
-                </section>
-
-                <!-- Skills -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-tools"></i> Skills
-                    </h2>
-                    <div class="space-y-3">
-                        <div>
-                            <div class="flex justify-between text-[11px] mb-1">
-                                <span class="font-medium text-cvTextDark">Python</span>
-                                <span class="text-cvTextGray">Advanced</span>
-                            </div>
-                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[11px] mb-1">
-                                <span class="font-medium text-cvTextDark">AI / NLP</span>
-                                <span class="text-cvTextGray">Advanced</span>
-                            </div>
-                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[11px] mb-1">
-                                <span class="font-medium text-cvTextDark">JavaScript / TypeScript</span>
-                                <span class="text-cvTextGray">Intermediate</span>
-                            </div>
-                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:62%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[11px] mb-1">
-                                <span class="font-medium text-cvTextDark">SQL</span>
-                                <span class="text-cvTextGray">Intermediate</span>
-                            </div>
-                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-[11px] mb-1">
-                                <span class="font-medium text-cvTextDark">Cloud (AWS / GCP)</span>
-                                <span class="text-cvTextGray">Beginner</span>
-                            </div>
-                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%"></div></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- GitHub Projects -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-code-branch"></i> GitHub Projects
-                    </h2>
-                    <div class="space-y-2.5">
-                        <a href="https://github.com/KhanhNguyenAI/book" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <h3 class="text-[11px] font-bold text-cvBlue">Book Management</h3>
-                            <p class="text-[10px] text-cvTextGray">AI/NLP Search system</p>
-                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /book</span>
-                        </a>
-                        <a href="https://github.com/KhanhNguyenAI/oldshop" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <h3 class="text-[11px] font-bold text-cvBlue">OldShop E-commerce</h3>
-                            <p class="text-[10px] text-cvTextGray">Full-stack React / TypeScript</p>
-                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /oldshop</span>
-                        </a>
-                        <a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <h3 class="text-[11px] font-bold text-cvBlue">Para Powerlifting 2026</h3>
-                            <p class="text-[10px] text-cvTextGray">大会管理Webアプリ</p>
-                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /Para-powerlifting-2026</span>
-                        </a>
-                    </div>
-                </section>
-
-                <!-- Languages -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-language"></i> Languages
-                    </h2>
-                    <div class="space-y-2.5">
-                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <span class="font-medium text-[12px]">Japanese</span>
-                            <span class="bg-cvBlue text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">N2</span>
-                        </div>
-                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <span class="font-medium text-[12px]">English</span>
-                            <span class="bg-cvAccent text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">B1</span>
-                        </div>
-                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
-                            <span class="font-medium text-[12px]">Vietnamese</span>
-                            <span class="text-cvTextGray text-[10px] italic">Native</span>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Hobbies -->
-                <section>
-                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <i class="fas fa-heart"></i> Hobbies
-                    </h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Traveling</span>
-                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Photography</span>
-                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Reading</span>
-                    </div>
-                </section>
-            </div>
+    <!-- PAGE 2: JOURNEY -->
+    <div class="page-slide p2" id="page2">
+      <div class="journey">
+        <div class="j-hero">
+          <div class="j-eyebrow">My Story</div>
+          <div class="j-hero-title">日本への<em>留学</em></div>
+          <div class="j-hero-sub">〜 挑戦・成長・そして未来へ 〜</div>
         </div>
 
-        <!-- ══ RIGHT COLUMN ══ -->
-        <div class="w-[65%] py-12 px-10 flex flex-col gap-10">
+        <div class="j-content">
+          <!-- Story timeline -->
+          <div class="j-story">
+            <div class="j-item">
+              <div class="j-dot-col"><div class="j-dot c1"></div><div class="j-vline"></div></div>
+              <div class="j-body">
+                <div class="j-tag t1">Apr 2023 — 来日</div>
+                <div class="j-head">期待と不安の中で</div>
+                <div class="j-text">2023年4月に日本へ来た当初、私は期待と不安の両方を抱えていました。特に、日本語での会話には自信がなく、授業内容や周囲の会話を十分に理解できず、悔しい思いをすることも多くありました。<br>また、家族と離れて海外で生活すること自体が初めてだったため、最初の頃は孤独や不安を感じることもありました。</div>
+              </div>
+            </div>
+            <div class="j-item">
+              <div class="j-dot-col"><div class="j-dot c2"></div><div class="j-vline"></div></div>
+              <div class="j-body">
+                <div class="j-tag t2">生活面での挑戦</div>
+                <div class="j-head">苦労の中で学んだこと</div>
+                <div class="j-text">生活面では、アルバイト・学校・将来への不安を同時に抱えながら過ごしていました。特に、時間管理や体力面で苦労し、思うようにいかず落ち込むこともありました。<br>しかし、その経験を通じて、「分からないことから逃げず、自分から行動すること」の大切さを学びました。</div>
+              </div>
+            </div>
+            <div class="j-item">
+              <div class="j-dot-col"><div class="j-dot c3"></div><div class="j-vline"></div></div>
+              <div class="j-body">
+                <div class="j-tag t3">自己成長</div>
+                <div class="j-head">積極的に動く姿勢へ</div>
+                <div class="j-text">授業で理解できなかった内容は、自分で調べたり、先生や友人へ積極的に質問したりするようにしました。また、日本語力を伸ばすために、日常生活でもできるだけ日本語で会話することを意識しました。<br>最初は緊張していた私も、少しずつ自信を持って行動できるようになったと感じています。</div>
+              </div>
+            </div>
+            <div class="j-item">
+              <div class="j-dot-col"><div class="j-dot c4"></div><div class="j-vline"></div></div>
+              <div class="j-body">
+                <div class="j-tag t4">多文化交流</div>
+                <div class="j-head">異なる価値観との出会い</div>
+                <div class="j-text">学校では、多国籍の学生と関わる機会が多くありました。異なる文化や価値観に触れることで、自分にはなかった考え方を学び、相手の立場を意識しながらコミュニケーションを取る力が身についたと感じています。<br>特に、「違い」を否定するのではなく、理解しようとする姿勢の大切さを学びました。</div>
+              </div>
+            </div>
+            <div class="j-item">
+              <div class="j-dot-col"><div class="j-dot c5"></div></div>
+              <div class="j-body">
+                <div class="j-tag t5">現在と未来</div>
+                <div class="j-head">チーム経験から社会へ</div>
+                <div class="j-text">チームでの課題制作では、最初は自分の意見をうまく伝えられませんでした。しかし、相手に分かりやすく説明することを意識しながら取り組むことで、少しずつ積極的に発言できるようになりました。<br>現在はAIやシステム開発について学びながら、技術力だけでなく、継続力・主体性・協調性も大切にしています。将来的には、日本で学んだ経験を活かし、技術を通じて社会に価値を提供できるエンジニアになりたいと考えております。</div>
+              </div>
+            </div>
+          </div>
 
-            <!-- Profile -->
-            <section>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
-                        <i class="fas fa-user text-xs"></i>
-                    </div>
-                    <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Profile</h2>
-                </div>
-                <div class="h-0.5 w-20 mb-4" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
-                <p class="text-cvTextGray leading-relaxed text-[13.5px] text-justify">
-                    社会に貢献したいという思いは、多くの人が抱く願いだと考えております。私がIT業界を志望した理由も、社会に価値を提供できる存在になりたいという思いからです。特にシステム分野および人工知能（AI）に強い関心を持っており、これらの分野は現在のテクノロジー社会を理解するだけでなく、未来を形作る重要な技術であると感じています。将来的には、技術を通じて社会に実質的な価値を提供できるエンジニアを目指しております。
-                </p>
-            </section>
-
-            <!-- Education -->
-            <section>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
-                        <i class="fas fa-graduation-cap text-xs"></i>
-                    </div>
-                    <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Education</h2>
-                </div>
-                <div class="h-0.5 w-20 mb-6" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
-
-                <div class="space-y-6">
-                    <div class="relative pl-6 border-l-2 border-cvBorder">
-                        <div class="absolute w-3 h-3 bg-cvBlue rounded-full -left-[7.5px] top-1 shadow-sm"></div>
-                        <div class="flex justify-between items-baseline mb-1">
-                            <h3 class="font-bold text-sm">日本工学院八王子専門学校</h3>
-                            <span class="text-[11px] font-bold text-cvBlue bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Apr 2025 – Apr 2027</span>
-                        </div>
-                        <p class="text-cvTextGray text-[13px]">AIシステム科（東京）</p>
-                    </div>
-
-                    <div class="relative pl-6 border-l-2 border-cvBorder">
-                        <div class="absolute w-3 h-3 bg-cvAccent rounded-full -left-[7.5px] top-1 shadow-sm"></div>
-                        <div class="flex justify-between items-baseline mb-1">
-                            <h3 class="font-bold text-sm">東京平田日本語学院</h3>
-                            <span class="text-[11px] font-bold text-cvTextGray bg-gray-50 px-2 py-0.5 rounded border">Apr 2023 – Mar 2025</span>
-                        </div>
-                        <p class="text-cvTextGray text-[13px]">日本語学科（東京）</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Certificates -->
-            <section>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
-                        <i class="fas fa-certificate text-xs"></i>
-                    </div>
-                    <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Certificates</h2>
-                </div>
-                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
-
-                <div class="grid grid-cols-1 gap-2.5">
-                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">基本情報技術者試験 (FE)</span>
-                        <div class="text-right">
-                            <span class="text-[11px] block font-bold text-cvBlue">Jan 2026</span>
-                            <span class="text-[10px] text-cvTextGray">A: 515 ｜ B: 605</span>
-                        </div>
-                    </div>
-                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">ITパスポート</span>
-                        <div class="text-right">
-                            <span class="text-[11px] block font-bold text-cvBlue">Feb 2026</span>
-                            <span class="text-[10px] text-cvTextGray">645点</span>
-                        </div>
-                    </div>
-                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">AI パスポート</span>
-                        <span class="text-[11px] font-bold text-cvBlue">Oct 2025</span>
-                    </div>
-                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">PythonZen &amp; PEP 8 検定試験</span>
-                        <span class="text-[11px] font-bold text-cvBlue">Dec 2025</span>
-                    </div>
-                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">Gemini Certified Student</span>
-                        <span class="text-[11px] font-bold text-cvBlue">Dec 2025</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Achievements -->
-            <section>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
-                        <i class="fas fa-trophy text-xs"></i>
-                    </div>
-                    <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Achievements</h2>
-                </div>
-                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
-
-                <div class="space-y-4">
-                    <div class="card-hover bg-blue-50 p-4 rounded-xl border-l-4 border-cvBlue border border-blue-100">
-                        <h3 class="font-bold text-[14px] mb-1">第26回全日本パラ・パワーリフティング国際招待選手権</h3>
-                        <p class="text-[12.5px] text-cvTextGray mb-2">大会運営支援Webアプリケーションの開発・ボランティア参加</p>
-                        <a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank"
-                            class="text-[11px] text-cvBlue hover:underline flex items-center gap-1">
-                            <i class="fab fa-github"></i> KhanhNguyenAI/Para-powerlifting-2026
-                        </a>
-                    </div>
-
-                    <div class="card-hover bg-slate-50 p-4 rounded-xl border-l-4 border-cvAccent border border-cvBorder">
-                        <h3 class="font-bold text-[14px] mb-1">岡山モノづくり学生アイデア・デザインコンテスト</h3>
-                        <p class="text-[12.5px] text-cvTextGray mb-2">令和7年度 <span class="font-bold text-cvBlue">優秀賞</span> 受賞</p>
-                        <a href="https://drive.google.com/file/d/10T_BKymRZeMz4YGg1k8GmzvpnbvLUQXc/view?usp=sharing"
-                            target="_blank" class="text-[11px] text-cvBlue hover:underline flex items-center gap-1">
-                            <i class="fas fa-external-link-alt"></i> View Project Document
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Courses -->
-            <section>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
-                        <i class="fas fa-book text-xs"></i>
-                    </div>
-                    <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Courses</h2>
-                </div>
-                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
-
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="card-hover flex flex-col p-3 border border-cvBorder rounded-xl bg-white">
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-[12px] font-bold uppercase">Machine Learning for Data Science</h3>
-                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded border border-cvBorder whitespace-nowrap ml-2">May 2025</span>
-                        </div>
-                        <p class="text-[11px] text-cvTextGray flex items-center gap-2">
-                            Instructor:
-                            <a href="https://www.linkedin.com/in/vietnh1009/" target="_blank"
-                                class="text-cvBlue font-medium hover:underline flex items-center gap-1">
-                                Viet Nguyen <i class="fab fa-linkedin text-[10px]"></i>
-                            </a>
-                        </p>
-                    </div>
-                    <div class="card-hover flex flex-col p-3 border border-cvBorder rounded-xl bg-white">
-                        <div class="flex justify-between items-start mb-1">
-                            <h3 class="text-[12px] font-bold uppercase">Deep Learning for Computer Vision</h3>
-                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded border border-cvBorder whitespace-nowrap ml-2">Aug 2025</span>
-                        </div>
-                        <p class="text-[11px] text-cvTextGray flex items-center gap-2">
-                            Instructor:
-                            <a href="https://www.linkedin.com/in/vietnh1009/" target="_blank"
-                                class="text-cvBlue font-medium hover:underline flex items-center gap-1">
-                                Viet Nguyen <i class="fab fa-linkedin text-[10px]"></i>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </section>
-
+          <!-- Videos + album button -->
+          <div class="j-visual">
+            <!-- 9 visible photos -->
+            <div class="pgrid">
+              <div class="pc fa" onclick="lb('img/z7814532750845_3a988de0fdd998fe376cd25d1ec1881a.jpg')"><img
+                  src="img/z7814532750845_3a988de0fdd998fe376cd25d1ec1881a.jpg" alt=""
+                  style="height:82px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+              <div class="pc fb" onclick="lb('img/z7814532766977_aa13b7d503b9086a24e2f997129d6aac.jpg')"><img
+                  src="img/z7814532766977_aa13b7d503b9086a24e2f997129d6aac.jpg" alt=""
+                  style="height:82px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+            </div>
+            <div class="pc fc" onclick="lb('img/z7814532812538_6724026be544f8d0b4409a329a713725.jpg')">
+              <img src="img/z7814532812538_6724026be544f8d0b4409a329a713725.jpg" alt=""
+                style="height:90px;width:100%;object-fit:cover">
+              <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+            </div>
+            <div class="pgrid">
+              <div class="pc fd" onclick="lb('img/z7814532850374_bd19914c0130e9d373e179c4ee9906eb.jpg')"><img
+                  src="img/z7814532850374_bd19914c0130e9d373e179c4ee9906eb.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+              <div class="pc fe" onclick="lb('img/z7814532864258_d7eb9274d0f42e1ad51c2ce92a076f7a.jpg')"><img
+                  src="img/z7814532864258_d7eb9274d0f42e1ad51c2ce92a076f7a.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+            </div>
+            <div class="pgrid">
+              <div class="pc fa" onclick="lb('img/z7814532871062_a51e35dfd98c630974706eaf17b0f777.jpg')"><img
+                  src="img/z7814532871062_a51e35dfd98c630974706eaf17b0f777.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+              <div class="pc fb" onclick="lb('img/z7814532914471_4324c73883a6a0f61d5bfaa06c673d4d.jpg')"><img
+                  src="img/z7814532914471_4324c73883a6a0f61d5bfaa06c673d4d.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+            </div>
+            <div class="pgrid">
+              <div class="pc fc" onclick="lb('img/z7814541710826_4df7b7892b5a2dced3683706fb58f292.jpg')"><img
+                  src="img/z7814541710826_4df7b7892b5a2dced3683706fb58f292.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+              <div class="pc fd" onclick="lb('img/z7814541801418_f8cdba07994ec83ae5ccb89e799d35c3.jpg')"><img
+                  src="img/z7814541801418_f8cdba07994ec83ae5ccb89e799d35c3.jpg" alt=""
+                  style="height:78px;width:100%;object-fit:cover">
+                <div class="pc-ov"><i class="fas fa-expand-alt"></i></div>
+              </div>
+            </div>
+            <!-- More button -->
+            <!-- Album button -->
+            <button class="more-btn" onclick="openGallery()">
+              <i class="fas fa-images"></i> フォトアルバムを見る &nbsp;›
+            </button>
+            <!-- Video 1 — full width -->
+            <div class="j-vid">
+              <video controls muted playsinline preload="metadata">
+                <source src="img/20260505_124754000_iOS.MP4" type="video/mp4">
+              </video>
+              <div class="j-vid-lbl"><i class="fas fa-video"></i> 生活記録①</div>
+            </div>
+            <!-- Video 2 — full width -->
+            <div class="j-vid">
+              <video controls muted playsinline preload="metadata">
+                <source src="img/20260505_111014000_iOS.MOV" type="video/quicktime">
+                <source src="img/20260505_111014000_iOS.MOV" type="video/mp4">
+              </video>
+              <div class="j-vid-lbl"><i class="fas fa-video"></i> 生活記録②</div>
+            </div>
+          
+            <!-- Video 4 — full width -->
+            <div class="j-vid">
+              <video controls muted playsinline preload="metadata">
+                <source src="img/7814532962669.mp4" type="video/mp4">
+              </video>
+              <div class="j-vid-lbl"><i class="fas fa-video"></i> 生活記録④</div>
+            </div>
+          </div>
         </div>
+
+        <div class="j-close">
+          <div class="j-quote">日本での生活を通じて、技術だけではなく、継続力・主体性、そして周囲と協力することの大切さを学びました。<br>今後は、これまでの経験を活かしながら、技術を通じて社会に価値を提供できるエンジニアへと成長していきたいと考えております。</div>
+          <div class="j-sig">— Nguyen Van Tuan Khanh</div>
+        </div>
+      </div>
+    </div><!-- #page2 -->
+
+    <!-- PAGE 3: CAREER VISION -->
+    <div class="page-slide p3" id="page3">
+      <div class="career">
+        <div class="ca-hero">
+          <div class="ca-eyebrow">Career Vision</div>
+          <div class="ca-hero-title">キャリア<em>ビジョン</em></div>
+          <div class="ca-hero-sub">〜 働く環境・希望職種・5年後・10年後 〜</div>
+        </div>
+
+        <div class="ca-content">
+          <div class="ca-story">
+
+            <div class="ca-item">
+              <div class="ca-dot-col"><div class="ca-dot c1"></div><div class="ca-vline"></div></div>
+              <div class="ca-body">
+                <div class="ca-tag t1">Working Environment</div>
+                <div class="ca-head">希望する働く環境</div>
+                <div class="ca-text">私が希望する働く環境は、多文化でオープンな雰囲気の中、お互いに協力しながら成長できる環境です。新しい技術や知識を継続して学び、様々な経験に挑戦できる環境に魅力を感じています。また、チームで協力しながら、共通の目標に向かって成長し、社会や会社へ価値を提供できる働き方を大切にしたいと考えております。</div>
+              </div>
+            </div>
+
+            <div class="ca-item">
+              <div class="ca-dot-col"><div class="ca-dot c2"></div><div class="ca-vline"></div></div>
+              <div class="ca-body">
+                <div class="ca-tag t2">Desired Job</div>
+                <div class="ca-head">希望する仕事</div>
+                <div class="ca-text">業務系システム開発やAI・データ活用に関わる仕事に興味があります。特に、人々の生活や企業活動を支えるシステムに携わり、技術を通じて実際の課題解決に貢献できるエンジニアを目指しています。</div>
+              </div>
+            </div>
+
+            <div class="ca-item">
+              <div class="ca-dot-col"><div class="ca-dot c3"></div><div class="ca-vline"></div></div>
+              <div class="ca-body">
+                <div class="ca-tag t3">Near Future</div>
+                <div class="ca-head">入社後〜数年間</div>
+                <div class="ca-text">まず入社後の数年間で、プログラミング・設計・保守運用などの基礎技術をしっかり身につけ、チームの一員として信頼されるエンジニアになりたいと考えております。</div>
+              </div>
+            </div>
+
+            <div class="ca-item">
+              <div class="ca-dot-col"><div class="ca-dot c4"></div><div class="ca-vline"></div></div>
+              <div class="ca-body">
+                <div class="ca-tag t4">5 Years Later</div>
+                <div class="ca-head">5年後の目標</div>
+                <div class="ca-text">システム全体を理解しながら、自ら課題を考え、提案や改善ができるエンジニアへ成長したいです。また、AIやクラウドなど新しい技術についても継続的に学び、より幅広い分野に対応できる力を身につけたいと考えています。</div>
+              </div>
+            </div>
+
+            <div class="ca-item">
+              <div class="ca-dot-col"><div class="ca-dot c5"></div></div>
+              <div class="ca-body">
+                <div class="ca-tag t5">10 Years Later</div>
+                <div class="ca-head">10年後のビジョン</div>
+                <div class="ca-text">技術力だけではなく、コミュニケーション力やマネジメント力も高め、チームやプロジェクトを支えられる存在になりたいと考えております。将来的には、日本と海外をつなぐようなグローバルな仕事にも挑戦し、技術を通じて社会に価値を提供できるエンジニアへ成長していきたいです。</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="ca-visual">
+            <div class="ca-img-slot" id="caImgSlot">
+              <img src="img/para/career.jpg" alt="Career Vision" onclick="lb(this.src)" style="cursor:zoom-in;">
+            </div>
+          </div>
+        </div>
+
+        <div class="ca-close">
+          <div class="ca-quote">技術を通じて社会に価値を提供できるエンジニアとして、日本と世界をつなぐ架け橋になりたいと考えております。</div>
+          <div class="ca-sig">— Nguyen Van Tuan Khanh</div>
+        </div>
+      </div>
+    </div><!-- #page3 -->
+
+  </div><!-- #scene -->
+
+  <!-- Page dots -->
+  <div class="page-dots no-print">
+    <div class="dot active" id="dot1" onclick="goPage(1)"></div>
+    <div class="dot"        id="dot2" onclick="goPage(2)"></div>
+    <div class="dot"        id="dot3" onclick="goPage(3)"></div>
+  </div>
+
+</div><!-- .book-wrapper -->
+
+<!-- Status bubbles (left side, text displayed directly) -->
+<div class="status-bubble no-print" id="sb1" style="top:30%">
+  <button class="sb-close" onclick="document.getElementById('sb1').classList.add('hidden')">✕</button>
+  人それぞれ、コミュニケーションの取り方には違いがあると思います。質問にうまく答えることが苦手な人でも、実際には周囲と自然に打ち解け、良い関係を築ける人もいると思います。
+</div>
+<div class="status-bubble no-print" id="sb2" style="top:62%; animation-delay:.8s">
+  <button class="sb-close" onclick="document.getElementById('sb2').classList.add('hidden')">✕</button>
+  私が恋しく思うのは、若さそのものではありません。あの頃の無邪気に笑っていた自分の姿です。今では、その笑顔を他の子どもたちの中に見ることしかできません。
+</div>
+
+<!-- Knowledge floating bubble -->
+<button class="kb-bubble-btn no-print" onclick="openKnowledge()">
+  <span class="kb-icon">🧠</span>
+  <span class="kb-label">知識</span>
+</button>
+
+<!-- Knowledge overlay -->
+<div class="knowledge-overlay no-print" id="knowledgeOverlay">
+  <div class="kb-hdr">
+    <div class="kb-hdr-title">
+      🧠 学んだこと
+      <span>— 学校での知識・経験</span>
+    </div>
+    <button class="kb-close-btn" onclick="closeKnowledge()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="kb-body">
+
+    <!-- ① 学校で学んだこと -->
+    <div class="kb-cat" style="border-color:rgba(59,130,246,.25)">
+      <div class="kb-cat-hd" style="background:linear-gradient(90deg,rgba(59,130,246,.2),rgba(59,130,246,.05))">
+        <span class="kb-cat-hd-icon">🏫</span>
+        <div class="kb-cat-hd-text">
+          <strong>学校で学んだこと</strong>
+          <span>専門学校のカリキュラム</span>
+        </div>
+      </div>
+      <div class="kb-cat-body">
+        <div class="kb-sub">
+          <div class="kb-sub-lbl" style="color:#60a5fa">💻 プログラミング・システム開発</div>
+          <div class="kb-chips">
+            <div class="kb-chip"><span class="kbc-dot" style="background:#3b82f6"></span>Python</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#ef4444"></span>Java</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#f59e0b"></span>HTML / CSS / JavaScript（基礎）</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#10b981"></span>Webシステム開発の基礎</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#8b5cf6"></span>オブジェクト指向の考え方</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#06b6d4"></span>データベース・SQL</div>
+          </div>
+        </div>
+        <div class="kb-sub">
+          <div class="kb-sub-lbl" style="color:#fbbf24">🤝 チーム制作・実践経験</div>
+          <div class="kb-chips">
+            <div class="kb-chip"><span class="kbc-dot" style="background:#f59e0b"></span>チームでの課題制作</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#f59e0b"></span>役割分担と進捗管理</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#fb923c"></span>相手に分かりやすく説明する力</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#fb923c"></span>コミュニケーション能力</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#eab308"></span>多文化環境での協働</div>
+          </div>
+        </div>
+        <div class="kb-sub">
+          <div class="kb-sub-lbl" style="color:#34d399">🤖 AI・データサイエンス分野</div>
+          <div class="kb-chips">
+            <div class="kb-chip"><span class="kbc-dot" style="background:#10b981"></span>Machine Learning（機械学習）の基礎</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#10b981"></span>Deep Learning（深層学習）の基礎</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#34d399"></span>AIモデルの基礎的な実装</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Print button -->
-    <div class="fixed bottom-5 right-5 no-print">
-        <button onclick="window.print()"
-            class="bg-cvBlue text-white px-6 py-3 rounded-full shadow-lg hover:bg-cvAccent transition-all flex items-center gap-2 text-sm font-medium">
-            <i class="fas fa-print"></i> Print to PDF
-        </button>
+    <!-- ② 自主学習 -->
+    <div class="kb-cat" style="border-color:rgba(20,184,166,.25)">
+      <div class="kb-cat-hd" style="background:linear-gradient(90deg,rgba(20,184,166,.2),rgba(20,184,166,.05))">
+        <span class="kb-cat-hd-icon">🌐</span>
+        <div class="kb-cat-hd-text">
+          <strong>自主学習</strong>
+          <span>外部コース・独学</span>
+        </div>
+      </div>
+      <div class="kb-cat-body">
+        <div class="kb-sub">
+          <div class="kb-sub-lbl" style="color:#38bdf8">
+            🔗 外部コース —
+            <a href="https://www.linkedin.com/in/vietnh1009/" target="_blank" rel="noopener"
+               style="color:#38bdf8;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(56,189,248,.4)">
+              <i class="fab fa-linkedin"></i> VIET NGUYEN
+            </a>
+          </div>
+          <div class="kb-chips">
+            <div class="kb-chip"><span class="kbc-dot" style="background:#0a66c2"></span>Machine Learning for Data Science</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#0a66c2"></span>Deep Learning for Computer Vision</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#38bdf8"></span>Basic NLP</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#38bdf8"></span>Fundamentals of NLP</div>
+          </div>
+        </div>
+        <div class="kb-sub">
+          <div class="kb-sub-lbl" style="color:#f472b6">📚 独学中のテーマ</div>
+          <div class="kb-chips">
+            <div class="kb-chip"><span class="kbc-dot" style="background:#f472b6"></span>批判的思考（クリティカルシンキング）</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#f472b6"></span>仕事への取り組み方・思考法</div>
+            <div class="kb-chip"><span class="kbc-dot" style="background:#e879f9"></span>心理学・人の行動理解</div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- ③ 取得予定の資格 -->
+    <div class="kb-cat" style="border-color:rgba(245,158,11,.25)">
+      <div class="kb-cat-hd" style="background:linear-gradient(90deg,rgba(245,158,11,.2),rgba(245,158,11,.05))">
+        <span class="kb-cat-hd-icon">🏅</span>
+        <div class="kb-cat-hd-text">
+          <strong>取得予定の資格</strong>
+          <span>将来の目標</span>
+        </div>
+      </div>
+      <div class="kb-cat-body">
+        <div class="kb-chips">
+          <div class="kb-chip"><span class="kbc-dot" style="background:#f59e0b"></span>基本情報技術者試験（FE）</div>
+          <div class="kb-chip"><span class="kbc-dot" style="background:#f59e0b"></span>応用情報技術者試験（AP）</div>
+          <div class="kb-chip"><span class="kbc-dot" style="background:#ef4444"></span>Java認定試験</div>
+          <div class="kb-chip"><span class="kbc-dot" style="background:#fb923c"></span>AWS 認定クラウドプラクティショナー</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Project detail floating bubble -->
+<button class="pj-bubble-btn no-print" onclick="openProjDetail()">
+  <span class="pj-icon">💼</span>
+  <span class="pj-label">Project</span>
+</button>
+
+<!-- Friends Zone floating bubble -->
+<button class="fz-bubble-btn no-print" onclick="openFriends()">
+  <span class="fz-globe">🌏</span>
+  <span class="fz-label">Friends</span>
+</button>
+
+<!-- Friends Zone overlay -->
+<div class="friends-overlay no-print" id="friendsOverlay">
+  <div class="fz-hdr">
+    <div class="fz-hdr-title">
+      🌏 Friends Zone
+      <span>— 日本で出会った仲間たち</span>
+    </div>
+    <button class="fz-close-btn" onclick="closeFriends()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="fz-stage">
+    <div class="fz-net" id="fzNet">
+      <svg class="fz-svg" id="fzSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      <div class="fz-center">
+        <img class="fz-avatar" src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg" alt="Khanh"
+             onerror="this.src='https://ui-avatars.com/api/?name=Khanh&background=6c3483&color=fff&size=200'">
+        <div class="fz-center-name">KHANH</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project detail overlay -->
+<div class="pj-overlay no-print" id="projOverlay" onclick="if(event.target===this)closeProjDetail()">
+  <div class="pj-panel">
+    <div class="pj-panel-hd">
+      <div>
+        <div class="pj-panel-tag">Project · 就職サポートアプリ</div>
+        <div class="pj-panel-title">「IT学習コーチ」開発について</div>
+      </div>
+      <button class="pj-panel-close" onclick="closeProjDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="pj-panel-body">
+      <div class="pj-panel-para">「IT学習コーチ」というアプリは、IT資格の学習支援と、自分自身の就職活動をサポートするために開発しました。</div>
+      <div class="pj-panel-para">学習を進める中で、「必要な情報が分散していること」や、「勉強・就職活動・情報整理を同時に行う難しさ」を感じたことが、開発のきっかけです。</div>
+      <div class="pj-panel-para">そこで、自分が本当に必要だと感じた機能をまとめ、学習管理や情報整理、効率的な学習をサポートできるアプリとして制作しました。</div>
+      <div class="pj-panel-para">また、自分自身の課題を解決するだけではなく、同じようにIT資格の勉強や就職活動に取り組む人たちにも役立つものにしたいと考えております。</div>
+      <div class="pj-panel-para">この開発を通じて、技術だけではなく、「実際の課題やニーズから考えること」の重要性を学ぶことができました。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Para Powerlifting detail overlay -->
+<div class="ach-overlay no-print" id="paraOverlay" onclick="if(event.target===this)closeParaDetail()">
+  <div class="ach-panel">
+    <div class="ach-panel-hd">
+      <div class="ach-panel-hd-text">
+        <div class="ach-panel-tag">Achievement · 2026</div>
+        <div class="ach-panel-title">第26回全日本パラ・パワーリフティング国際招待選手権</div>
+      </div>
+      <button class="ach-panel-close" onclick="closeParaDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ach-panel-body">
+      <div class="ach-panel-text">
+        <div class="ach-panel-para">初めて保守開発の立場を経験した際、最も難しかったのは、既存のコードを理解することでした。新規開発とは異なり、自分が作成したコードではないため、処理の流れや設計意図を把握するまでに多くの時間がかかりました。</div>
+        <div class="ach-panel-para">また、単にコードを修正するだけではなく、お客様からの要望や先生からの指示内容を正確に理解し、その目的に沿って対応する必要がありました。</div>
+        <div class="ach-panel-para">最初は「どこを修正すればよいのか」「影響範囲はどこまであるのか」が分からず苦労しましたが、処理を一つずつ確認しながら調査を進め、分からない部分は積極的に質問することで少しずつ理解を深めていきました。</div>
+        <div class="ach-panel-para">この経験を通じて、プログラミング力だけではなく、既存システムを読み解く力や、相手の要望を正確に理解する力、そして粘り強く調査する姿勢の重要性を学びました。</div>
+      </div>
+      <div class="ach-panel-img">
+        <img src="img/para/Screenshot 2026-05-11 225220.png" alt="Para Powerlifting App" onclick="lb(this.src)">
+        <div class="ach-panel-img-cap">大会運営支援 Web アプリケーション</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery overlay -->
+<div class="gallery-overlay no-print" id="galleryOverlay">
+  <div class="gal-header">
+    <div class="gal-title">
+      <i class="fas fa-images" style="color:#e74c3c"></i>
+      フォトアルバム
+      <span>— 日本での思い出</span>
+    </div>
+    <button class="gal-close" onclick="closeGallery()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="gal-body">
+    <div class="gal-section">
+      <div class="gal-sec-label">日本での思い出</div>
+      <div class="gal-grid" id="galGridAll"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLb()">
+  <button class="lb-x" onclick="closeLb()">×</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<button class="print-btn no-print" onclick="window.print()"><i class="fas fa-print"></i> Print to PDF</button>
+
+<script>
+  let currentPage = 1;
+
+  function goPage(n) {
+    const scene = document.getElementById('scene');
+    scene.classList.remove('on-p2', 'on-p3');
+    if (n === 2) scene.classList.add('on-p2');
+    if (n === 3) scene.classList.add('on-p3');
+    currentPage = n;
+    document.getElementById('nextBtn').classList.toggle('hide', n === 3);
+    document.getElementById('backBtn').classList.toggle('show', n > 1);
+    ['dot1','dot2','dot3'].forEach((id, i) => {
+      document.getElementById(id).classList.toggle('active', i + 1 === n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function slideNext() { goPage(Math.min(currentPage + 1, 3)); }
+  function slideBack() { goPage(Math.max(currentPage - 1, 1)); }
+
+  // Match scene height to tallest page
+  window.addEventListener('load', () => {
+    const scene = document.getElementById('scene');
+    const pages = ['page1','page2','page3'].map(id => document.getElementById(id));
+    pages.forEach(p => { p.style.transition = 'none'; p.style.transform = 'translateX(0)'; p.style.visibility = 'hidden'; });
+    const h = Math.max(...pages.map(p => p.scrollHeight));
+    pages.forEach(p => { p.style.transform = ''; p.style.visibility = ''; p.style.transition = ''; });
+    scene.style.minHeight = h + 'px';
+  });
+
+  function lb(src) {
+    document.getElementById('lb-img').src = src;
+    document.getElementById('lightbox').classList.add('on');
+  }
+  function closeLb() {
+    document.getElementById('lightbox').classList.remove('on');
+    document.getElementById('lb-img').src = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLb(); closeGallery(); closeFriends(); closeKnowledge(); closeParaDetail(); closeProjDetail(); }
+  });
+
+  const galPhotos = [
+    'img/z7814532750845_3a988de0fdd998fe376cd25d1ec1881a.jpg',
+    'img/z7814532766977_aa13b7d503b9086a24e2f997129d6aac.jpg',
+    'img/z7814532766820_057c83795abc23d5521df3ce1ae1217e.jpg',
+    'img/z7814532781709_c1bb923697ef3725bbe499ec4bc99ce3.jpg',
+    'img/z7814532782267_944d5bc05212d876bb7f9dae34f52dcf.jpg',
+    'img/z7814532795426_582ddb5f07df5b16f3b8875ec8fceb22.jpg',
+    'img/z7814532797184_efe1d881c1ec6ef7f3706c38d732fcae.jpg',
+    'img/z7814532804855_c0355eeda8cb017dcb575016ae4d338e.jpg',
+    'img/z7814532812538_6724026be544f8d0b4409a329a713725.jpg',
+    'img/z7814532812916_d52833ae9c6fd6f89e622b89b9995aa9.jpg',
+    'img/z7814532824009_c6db60260b811c3874fb671af99281f9.jpg',
+    'img/z7814532834757_2a3c079c65eaba896b8d4a91a971e8b9.jpg',
+    'img/z7814532842353_a9596fbe044f87807cf90041fba7a559.jpg',
+    'img/z7814532842354_d67cb742673f92de3bb6fc9685f42a9f.jpg',
+    'img/z7814532850374_bd19914c0130e9d373e179c4ee9906eb.jpg',
+    'img/z7814532852175_b02858de6569590464a749402f3a77ce.jpg',
+    'img/z7814532861712_7f20eef70f2b04a539aab615c61d2088.jpg',
+    'img/z7814532864258_d7eb9274d0f42e1ad51c2ce92a076f7a.jpg',
+    'img/z7814532870744_c4010a1849bfaa2cd1c5676560c1df72.jpg',
+    'img/z7814532871062_a51e35dfd98c630974706eaf17b0f777.jpg',
+    'img/z7814532882278_555af4a7e4c73c87f6a4b2408bdfe551.jpg',
+    'img/z7814532884073_99870227505c08b160ba799be1a9ccd3.jpg',
+    'img/z7814532896485_da445a60b0a05ea193a1b7e12e98ac3f.jpg',
+    'img/z7814532901638_a916c4046e6cfd4cc4b4225b92a6ab36.jpg',
+    'img/z7814532903052_dec5f7fe82473c70b49896743f3bdaec.jpg',
+    'img/z7814532914257_4e21ac87f069d8ff94e660d0bf61bd9a.jpg',
+    'img/z7814532914471_4324c73883a6a0f61d5bfaa06c673d4d.jpg',
+    'img/z7814532922611_707d6da8fda2f346a658f3f52b7a5ff4.jpg',
+    'img/z7814532923453_ba44ee3267f68ba0f215b2e3d362b164.jpg',
+    'img/z7814532932513_b53fa0d225e8d63679fdd5d9757a8ef9.jpg',
+    'img/z7814532942596_a77f30efb78a829923bc86db301f90e5.jpg',
+    'img/z7814532943708_31786c118aee0995b816a6c704dbbfd3.jpg',
+    'img/z7814532950823_f0b5e938ad5dc18ace4a62b2fe656b78.jpg',
+    'img/z7814532677215_6da8a8e0045fbf0f89ca273c2c31e3ac.jpg',
+    'img/z7814532681606_666c4a6a922dd84b3a559bcc5e6b34c4.jpg',
+    'img/z7814532685574_2a4cc9a67933ea4545838f4d96707253.jpg',
+    'img/z7814532693207_bc23cf9ff169917216fea6ccaccd57ad.jpg',
+    'img/z7814532695407_b05ce509ace40e3f6d1aa2a8e4c880d1.jpg',
+    'img/z7814532701012_fb2633228fefdda07bb21702dc27f7b5.jpg',
+    'img/z7814532711953_0c2ac9268026160549d184507e77ac07.jpg',
+    'img/z7814532721846_0d97ef593733137b8279e37174c5f662.jpg',
+    'img/z7814532722492_c8141727193d3f4848076dc91681a034.jpg',
+    'img/z7814532725762_6a0286e896542309d8c6140d88cbd7e4.jpg',
+    'img/z7814532734087_518ef5bb702f25877c2a912433634fd5.jpg',
+    'img/z7814532737305_80820799f5b27d0506192ec2d301e333.jpg',
+    'img/z7814532745376_ac12900746dc09ba076a620b11892ced.jpg',
+    'img/z7814532756226_f66939a22a711f63f93302c6276dd2f3.jpg',
+    'img/z7814532775129_6fa7eda94d1a8995d510dc1a4ea8c26c.jpg',
+    'img/z7814541674574_0cffd81d6f25b3a208be47e59ad6ac89.jpg',
+    'img/z7814541677030_b4984ffa9324c4521950ca58e16a1797.jpg',
+    'img/z7814541681129_8a43bacea91c311025e909e603c01caf.jpg',
+    'img/z7814541687342_ff2ce3f2a129f8346a34a34e23bcf8fc.jpg',
+    'img/z7814541699309_f26086bc9d1ebd8f5c42e7ed18852f74.jpg',
+    'img/z7814541701497_9f53a3d9371e35e621e87ffa422bb5e6.jpg',
+    'img/z7814541709838_45a05929a257bfa5a8dd84eef60b7b4f.jpg',
+    'img/z7814541710826_4df7b7892b5a2dced3683706fb58f292.jpg',
+    'img/z7814541716558_6a94ab39764831f6be906251d5c8a2ee.jpg',
+    'img/z7814541724080_f2349a46daa89a21cabffa929e6a2287.jpg',
+    'img/z7814541724823_1416715e332263547aec4d021902000a.jpg',
+    'img/z7814541742282_85b2a4edf3e6d157a0f009a1e3517ca5.jpg',
+    'img/z7814541744810_8e67dcfa627c8db70cdc92ef5c2326cb.jpg',
+    'img/z7814541751031_cc04be116a9bf777838924d8006931ea.jpg',
+    'img/z7814541755851_8e3f5970e9d0beed3241871982921d88.jpg',
+    'img/z7814541756185_714853534401b55a7b8a4f571e5a0552.jpg',
+    'img/z7814541768028_9d27d711b63cb5710ce6a67c6f484ee9.jpg',
+    'img/z7814541771676_4f346830503d978ccc52a3ec0bf5c0aa.jpg',
+    'img/z7814541779289_dd8bc9c7f96a3ddb35cd260b53d80897.jpg',
+    'img/z7814541784766_b27f8f5274733773b4d63a0d4fa94222.jpg',
+    'img/z7814541792875_f506cb623ab4a05eceb4571853802de2.jpg',
+    'img/z7814541795203_2d7e91100165598c507ac1b155d6b973.jpg',
+    'img/z7814541801418_f8cdba07994ec83ae5ccb89e799d35c3.jpg',
+    'img/z7814541807619_913a87fe17cebb769b7f7da62d10baf3.jpg',
+    'img/z7814541819620_37ed8f98e11066d989e8c926dad8b33b.jpg',
+  ];
+
+  let galBuilt = false;
+  function buildGallery() {
+    if (galBuilt) return;
+    galBuilt = true;
+    const grid = document.getElementById('galGridAll');
+    galPhotos.forEach(src => {
+      const div = document.createElement('div');
+      div.className = 'gal-item';
+      div.onclick = () => lb(src);
+      div.innerHTML = `<img src="${src}" alt="" loading="lazy">`;
+      grid.appendChild(div);
+    });
+  }
+
+  function openGallery() {
+    buildGallery();
+    document.getElementById('galleryOverlay').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGallery() {
+    document.getElementById('galleryOverlay').classList.remove('on');
+    document.body.style.overflow = '';
+  }
+
+  // ── Friends Zone ──
+  const friendsData = [
+    { flag:'🇻🇳', name:'ベトナム',   bg:'#c0392b', pos:[50,13]  },
+    { flag:'🇲🇲', name:'ミャンマー', bg:'#e67e22', pos:[74,21]  },
+    { flag:'🇳🇵', name:'ネパール',   bg:'#27ae60', pos:[87,44]  },
+    { flag:'🇨🇳', name:'中国',       bg:'#e74c3c', pos:[82,70]  },
+    { flag:'🇯🇵', name:'日本',       bg:'#e74c3c', pos:[62,85]  },
+    { flag:'🇵🇰', name:'パキスタン', bg:'#16a085', pos:[38,85]  },
+    { flag:'🇮🇷', name:'イラン',     bg:'#2980b9', pos:[18,70]  },
+    { flag:'🇫🇷', name:'フランス',   bg:'#2c3e50', pos:[13,44]  },
+    { flag:'🇺🇸', name:'アメリカ',   bg:'#8e44ad', pos:[26,21]  },
+    { flag:'🇨🇴', name:'コロンビア', bg:'#d35400', pos:[50,87]  },
+  ];
+  let fzBuilt = false;
+  function buildFriends() {
+    if (fzBuilt) return; fzBuilt = true;
+    const net = document.getElementById('fzNet');
+    const svg = document.getElementById('fzSvg');
+    friendsData.forEach((f, i) => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1','50'); line.setAttribute('y1','50');
+      line.setAttribute('x2',f.pos[0]); line.setAttribute('y2',f.pos[1]);
+      line.setAttribute('stroke',f.bg); line.setAttribute('stroke-width','0.6');
+      line.setAttribute('stroke-opacity','0.45'); line.setAttribute('stroke-dasharray','2.5 2.5');
+      svg.appendChild(line);
+      const div = document.createElement('div');
+      div.className = 'fz-bubble';
+      div.style.left = f.pos[0]+'%'; div.style.top = f.pos[1]+'%';
+      div.innerHTML = `<div class="fz-inner" style="animation:fzFloat ${3.6+i*0.28}s ease-in-out ${i*0.35}s infinite">
+        <div class="fz-flag" style="background:${f.bg}25;border:2px solid ${f.bg}70;box-shadow:0 4px 18px ${f.bg}55">${f.flag}</div>
+        <div class="fz-name">${f.name}</div></div>`;
+      net.appendChild(div);
+    });
+  }
+  function openFriends() {
+    buildFriends();
+    document.getElementById('friendsOverlay').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeFriends() {
+    document.getElementById('friendsOverlay').classList.remove('on');
+    document.body.style.overflow = '';
+  }
+
+  function openProjDetail() {
+    document.getElementById('projOverlay').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeProjDetail() {
+    document.getElementById('projOverlay').classList.remove('on');
+    document.body.style.overflow = '';
+  }
+
+  function openParaDetail() {
+    document.getElementById('paraOverlay').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeParaDetail() {
+    document.getElementById('paraOverlay').classList.remove('on');
+    document.body.style.overflow = '';
+  }
+
+  function openKnowledge() {
+    document.getElementById('knowledgeOverlay').classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeKnowledge() {
+    document.getElementById('knowledgeOverlay').classList.remove('on');
+    document.body.style.overflow = '';
+  }
+</script>
 </body>
 </html>
