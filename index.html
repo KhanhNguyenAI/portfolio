@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV - NGUYEN VAN TUAN KHANH</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,162 +25,243 @@
             }
         }
     </script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
-        rel="stylesheet">
-    <!-- FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* ── Screen-only enhancements ── */
+        @media screen {
+            .cv-container {
+                animation: fadeUp 0.5s ease both;
+            }
+
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(16px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+
+            .card-hover {
+                transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(44,74,112,0.13);
+                border-color: #3d6492;
+            }
+
+            .skill-tag {
+                transition: background 0.15s ease, color 0.15s ease;
+            }
+            .skill-tag:hover {
+                background: #2c4a70;
+                color: #fff;
+                border-color: #2c4a70;
+            }
+
+            .link-hover {
+                transition: color 0.15s ease;
+            }
+            .link-hover:hover {
+                color: #2c4a70;
+            }
+        }
+
+        /* Skill bar fill */
+        .skill-bar-track {
+            background: #e2e8f0;
+            border-radius: 9999px;
+            height: 5px;
+            overflow: hidden;
+        }
+        .skill-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #2c4a70, #3d6492);
+        }
+
+        /* ── Print ── */
         @media print {
             body {
                 background-color: white !important;
                 padding: 0 !important;
             }
-
             .cv-container {
                 box-shadow: none !important;
                 margin: 0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
+                animation: none !important;
             }
-
-            .no-print {
-                display: none;
-            }
+            .no-print { display: none; }
         }
 
-        section {
-            page-break-inside: avoid;
-        }
+        section { page-break-inside: avoid; }
     </style>
 </head>
 
 <body class="bg-slate-200 py-10 flex justify-center text-sm font-sans">
 
-    <!-- Main Container -->
     <div class="cv-container w-[210mm] min-h-[297mm] bg-white shadow-2xl flex relative overflow-hidden text-cvTextDark">
 
-        <!-- LEFT COLUMN (Sidebar) -->
+        <!-- ══ LEFT COLUMN ══ -->
         <div class="w-[35%] bg-cvLightBlue flex flex-col border-r border-cvBorder">
 
-            <!-- Header Section -->
-            <div class="bg-cvBlue pt-12 pb-10 px-6 text-center relative">
-                <div class="absolute top-0 left-0 w-full h-full opacity-10"
-                    style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 15px 15px;">
-                </div>
+            <!-- Header -->
+            <div class="pt-12 pb-10 px-6 text-center relative" style="background: linear-gradient(145deg, #1e3a5f 0%, #2c4a70 60%, #3d6492 100%)">
+                <!-- dot pattern -->
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 15px 15px;"></div>
 
                 <h1 class="text-white font-bold text-2xl leading-tight tracking-wider uppercase mb-6 relative z-10">
                     NGUYEN VAN<br>TUAN KHANH
                 </h1>
 
-                <!-- Profile Image -->
+                <!-- Profile image with glow ring -->
                 <div class="relative inline-block z-10">
-                    <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg bg-white">
-                        <img src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg" alt="Profile"
-                            onerror="this.src='https://ui-avatars.com/api/?name=Khanh+Nguyen&background=3d6492&color=fff&size=200'"
-                            class="w-full h-full object-cover">
+                    <div class="w-36 h-36 rounded-full p-[3px]" style="background: linear-gradient(135deg, #fff 0%, #a8c4e0 100%); box-shadow: 0 0 20px rgba(255,255,255,0.25)">
+                        <div class="w-full h-full rounded-full overflow-hidden bg-white">
+                            <img src="z7558555247204_65cc919d0bad2f59d1ded2599b6f3f46.jpg" alt="Profile"
+                                onerror="this.src='https://ui-avatars.com/api/?name=Khanh+Nguyen&background=3d6492&color=fff&size=200'"
+                                class="w-full h-full object-cover">
+                        </div>
                     </div>
+                </div>
+
+                <!-- Role badge -->
+                <div class="mt-4 relative z-10">
+                    <span class="inline-block bg-white bg-opacity-15 text-white text-[11px] px-3 py-1 rounded-full tracking-wide border border-white border-opacity-30">
+                        AI Engineer Student
+                    </span>
                 </div>
             </div>
 
-            <div class="px-8 py-8 flex flex-col gap-8">
+            <div class="px-7 py-8 flex flex-col gap-7">
 
-                <!-- Contact Info -->
+                <!-- Contact -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-address-card"></i> Contact
                     </h2>
-                    <ul class="space-y-3 text-[13px] text-cvTextGray">
+                    <ul class="space-y-3 text-[12.5px] text-cvTextGray">
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-envelope text-cvAccent mt-1 w-4"></i>
-                            <span class="break-all">9.7nguyenvantuankhanh@gmail.com</span>
+                            <i class="fas fa-envelope text-cvAccent mt-0.5 w-4"></i>
+                            <a href="mailto:9.7nguyenvantuankhanh@gmail.com" class="break-all link-hover">9.7nguyenvantuankhanh@gmail.com</a>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-phone text-cvAccent mt-1 w-4"></i>
+                            <i class="fas fa-phone text-cvAccent mt-0.5 w-4"></i>
                             <span>070-4741-1506</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt text-cvAccent mt-1 w-4"></i>
-                            <span>東京都福生市武蔵野台1-3-9<br>東福生マンション502<br>197-0013</span>
+                            <i class="fas fa-map-marker-alt text-cvAccent mt-0.5 w-4"></i>
+                            <span>東京都福生市武蔵野台1-3-9<br>東福生マンション502 〒197-0013</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fab fa-github text-cvAccent mt-0.5 w-4"></i>
+                            <a href="https://github.com/KhanhNguyenAI" target="_blank" class="link-hover text-cvBlue font-medium">KhanhNguyenAI</a>
                         </li>
                     </ul>
                 </section>
 
-                <!-- Documents (NEW SECTION) -->
+                <!-- Documents -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-folder-open"></i> Documents
                     </h2>
-                    <div class="space-y-2">
-                        <a href="https://drive.google.com/drive/folders/1TeMzTgKKTI0DoguJY5j9Qtg5a0OFrzz_?usp=drive_link" 
-                           target="_blank" 
-                           class="flex items-center gap-3 bg-white p-3 rounded border border-cvBorder hover:border-cvAccent transition-colors group">
-                            <i class="fas fa-file-pdf text-red-500 text-lg"></i>
-                            <div>
-                                <p class="text-[11px] font-bold text-cvBlue group-hover:text-cvAccent">履歴書・職務経歴書</p>
-                                <p class="text-[10px] text-cvTextGray italic">Google Drive Link</p>
-                            </div>
-                        </a>
-                    </div>
+                    <a href="https://drive.google.com/drive/folders/1TeMzTgKKTI0DoguJY5j9Qtg5a0OFrzz_?usp=drive_link"
+                       target="_blank"
+                       class="card-hover flex items-center gap-3 bg-white p-3 rounded-lg border border-cvBorder group">
+                        <i class="fas fa-file-pdf text-red-500 text-lg"></i>
+                        <div>
+                            <p class="text-[11px] font-bold text-cvBlue">履歴書・職務経歴書</p>
+                            <p class="text-[10px] text-cvTextGray">Google Drive</p>
+                        </div>
+                        <i class="fas fa-external-link-alt text-[9px] text-cvTextGray ml-auto"></i>
+                    </a>
                 </section>
 
                 <!-- Skills -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-tools"></i> Skills
                     </h2>
-                    <div class="flex flex-wrap gap-2 text-[12px]">
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">Python</span>
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">AI / NLP</span>
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">JavaScript</span>
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">TypeScript</span>
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">SQL</span>
-                        <span class="bg-white border border-cvBorder px-3 py-1 rounded">Cloud (AWS/GCP)</span>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="font-medium text-cvTextDark">Python</span>
+                                <span class="text-cvTextGray">Advanced</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="font-medium text-cvTextDark">AI / NLP</span>
+                                <span class="text-cvTextGray">Advanced</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="font-medium text-cvTextDark">JavaScript / TypeScript</span>
+                                <span class="text-cvTextGray">Intermediate</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:62%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="font-medium text-cvTextDark">SQL</span>
+                                <span class="text-cvTextGray">Intermediate</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[11px] mb-1">
+                                <span class="font-medium text-cvTextDark">Cloud (AWS / GCP)</span>
+                                <span class="text-cvTextGray">Beginner</span>
+                            </div>
+                            <div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%"></div></div>
+                        </div>
                     </div>
                 </section>
 
                 <!-- GitHub Projects -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-code-branch"></i> GitHub Projects
                     </h2>
-                    <div class="space-y-3">
-                        <div class="bg-white p-2.5 rounded border border-cvBorder">
+                    <div class="space-y-2.5">
+                        <a href="https://github.com/KhanhNguyenAI/book" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
                             <h3 class="text-[11px] font-bold text-cvBlue">Book Management</h3>
-                            <p class="text-[10px] text-cvTextGray mb-1">AI/NLP Search system</p>
-                            <a href="https://github.com/KhanhNguyenAI/book" target="_blank"
-                                class="text-[9px] text-cvAccent flex items-center gap-1 hover:underline italic">
-                                <i class="fab fa-github"></i> /book
-                            </a>
-                        </div>
-                        <div class="bg-white p-2.5 rounded border border-cvBorder">
+                            <p class="text-[10px] text-cvTextGray">AI/NLP Search system</p>
+                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /book</span>
+                        </a>
+                        <a href="https://github.com/KhanhNguyenAI/oldshop" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
                             <h3 class="text-[11px] font-bold text-cvBlue">OldShop E-commerce</h3>
-                            <p class="text-[10px] text-cvTextGray mb-1">Full-stack React/TS</p>
-                            <a href="https://github.com/KhanhNguyenAI/oldshop" target="_blank"
-                                class="text-[9px] text-cvAccent flex items-center gap-1 hover:underline italic">
-                                <i class="fab fa-github"></i> /oldshop
-                            </a>
-                        </div>
+                            <p class="text-[10px] text-cvTextGray">Full-stack React / TypeScript</p>
+                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /oldshop</span>
+                        </a>
+                        <a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank" class="card-hover block bg-white p-2.5 rounded-lg border border-cvBorder">
+                            <h3 class="text-[11px] font-bold text-cvBlue">Para Powerlifting 2026</h3>
+                            <p class="text-[10px] text-cvTextGray">大会管理Webアプリ</p>
+                            <span class="text-[9px] text-cvAccent flex items-center gap-1 mt-1"><i class="fab fa-github"></i> /Para-powerlifting-2026</span>
+                        </a>
                     </div>
                 </section>
 
                 <!-- Languages -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-language"></i> Languages
                     </h2>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-white p-2 rounded border border-cvBorder">
-                            <span class="font-medium text-xs">Japanese</span>
-                            <span class="bg-cvBlue text-white text-[10px] px-2 py-0.5 rounded-full">N2</span>
+                    <div class="space-y-2.5">
+                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
+                            <span class="font-medium text-[12px]">Japanese</span>
+                            <span class="bg-cvBlue text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">N2</span>
                         </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded border border-cvBorder">
-                            <span class="font-medium text-xs">English</span>
-                            <span class="bg-cvAccent text-white text-[10px] px-2 py-0.5 rounded-full">B1</span>
+                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
+                            <span class="font-medium text-[12px]">English</span>
+                            <span class="bg-cvAccent text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold">B1</span>
                         </div>
-                        <div class="flex justify-between items-center bg-white p-2 rounded border border-cvBorder">
-                            <span class="font-medium text-xs">Vietnamese</span>
+                        <div class="card-hover flex justify-between items-center bg-white p-2.5 rounded-lg border border-cvBorder">
+                            <span class="font-medium text-[12px]">Vietnamese</span>
                             <span class="text-cvTextGray text-[10px] italic">Native</span>
                         </div>
                     </div>
@@ -189,30 +269,30 @@
 
                 <!-- Hobbies -->
                 <section>
-                    <h2 class="text-cvBlue text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <h2 class="text-cvBlue text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                         <i class="fas fa-heart"></i> Hobbies
                     </h2>
                     <div class="flex flex-wrap gap-2">
-                        <span class="bg-slate-200 px-3 py-1 rounded-full text-[11px]">Traveling</span>
-                        <span class="bg-slate-200 px-3 py-1 rounded-full text-[11px]">Photography</span>
-                        <span class="bg-slate-200 px-3 py-1 rounded-full text-[11px]">Reading</span>
+                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Traveling</span>
+                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Photography</span>
+                        <span class="skill-tag bg-slate-100 border border-cvBorder px-3 py-1 rounded-full text-[11px] cursor-default">Reading</span>
                     </div>
                 </section>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN (Main Content) -->
+        <!-- ══ RIGHT COLUMN ══ -->
         <div class="w-[65%] py-12 px-10 flex flex-col gap-10">
 
             <!-- Profile -->
             <section>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-cvBlue rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-user"></i>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
+                        <i class="fas fa-user text-xs"></i>
                     </div>
                     <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Profile</h2>
                 </div>
-                <div class="h-1 w-20 bg-cvBlue mb-4"></div>
+                <div class="h-0.5 w-20 mb-4" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
                 <p class="text-cvTextGray leading-relaxed text-[13.5px] text-justify">
                     社会に貢献したいという思いは、多くの人が抱く願いだと考えております。私がIT業界を志望した理由も、社会に価値を提供できる存在になりたいという思いからです。特にシステム分野および人工知能（AI）に強い関心を持っており、これらの分野は現在のテクノロジー社会を理解するだけでなく、未来を形作る重要な技術であると感じています。将来的には、技術を通じて社会に実質的な価値を提供できるエンジニアを目指しております。
                 </p>
@@ -220,73 +300,69 @@
 
             <!-- Education -->
             <section>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-cvBlue rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-graduation-cap"></i>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
+                        <i class="fas fa-graduation-cap text-xs"></i>
                     </div>
                     <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Education</h2>
                 </div>
-                <div class="h-1 w-20 bg-cvBlue mb-6"></div>
+                <div class="h-0.5 w-20 mb-6" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
 
                 <div class="space-y-6">
                     <div class="relative pl-6 border-l-2 border-cvBorder">
-                        <div class="absolute w-3 h-3 bg-cvBlue rounded-full -left-[7.5px] top-1"></div>
+                        <div class="absolute w-3 h-3 bg-cvBlue rounded-full -left-[7.5px] top-1 shadow-sm"></div>
                         <div class="flex justify-between items-baseline mb-1">
                             <h3 class="font-bold text-sm">日本工学院八王子専門学校</h3>
-                            <span
-                                class="text-[11px] font-bold text-cvBlue bg-cvLightBlue px-2 py-0.5 rounded border">Apr
-                                2025 - Apr 2027</span>
+                            <span class="text-[11px] font-bold text-cvBlue bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Apr 2025 – Apr 2027</span>
                         </div>
-                        <p class="text-cvTextGray text-[13px]">AIシステム科 (東京)</p>
+                        <p class="text-cvTextGray text-[13px]">AIシステム科（東京）</p>
                     </div>
 
                     <div class="relative pl-6 border-l-2 border-cvBorder">
-                        <div class="absolute w-3 h-3 bg-cvAccent rounded-full -left-[7.5px] top-1"></div>
+                        <div class="absolute w-3 h-3 bg-cvAccent rounded-full -left-[7.5px] top-1 shadow-sm"></div>
                         <div class="flex justify-between items-baseline mb-1">
                             <h3 class="font-bold text-sm">東京平田日本語学院</h3>
-                            <span
-                                class="text-[11px] font-bold text-cvTextGray bg-gray-50 px-2 py-0.5 rounded border">Apr
-                                2023 - Mar 2025</span>
+                            <span class="text-[11px] font-bold text-cvTextGray bg-gray-50 px-2 py-0.5 rounded border">Apr 2023 – Mar 2025</span>
                         </div>
-                        <p class="text-cvTextGray text-[13px]">日本語学科 (東京)</p>
+                        <p class="text-cvTextGray text-[13px]">日本語学科（東京）</p>
                     </div>
                 </div>
             </section>
 
             <!-- Certificates -->
             <section>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-cvBlue rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-certificate"></i>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
+                        <i class="fas fa-certificate text-xs"></i>
                     </div>
                     <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Certificates</h2>
                 </div>
-                <div class="h-1 w-20 bg-cvBlue mb-6"></div>
+                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
 
-                <div class="grid grid-cols-1 gap-3">
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
+                <div class="grid grid-cols-1 gap-2.5">
+                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
                         <span class="text-[13px] font-medium">基本情報技術者試験 (FE)</span>
                         <div class="text-right">
                             <span class="text-[11px] block font-bold text-cvBlue">Jan 2026</span>
-                            <span class="text-[10px] text-cvTextGray italic">A: 515 | B: 605</span>
+                            <span class="text-[10px] text-cvTextGray">A: 515 ｜ B: 605</span>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
+                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
                         <span class="text-[13px] font-medium">ITパスポート</span>
                         <div class="text-right">
                             <span class="text-[11px] block font-bold text-cvBlue">Feb 2026</span>
-                            <span class="text-[10px] text-cvTextGray italic">645点</span>
+                            <span class="text-[10px] text-cvTextGray">645点</span>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
+                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
                         <span class="text-[13px] font-medium">AI パスポート</span>
                         <span class="text-[11px] font-bold text-cvBlue">Oct 2025</span>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
-                        <span class="text-[13px] font-medium">PythonZen & PEP 8 検定試験</span>
+                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
+                        <span class="text-[13px] font-medium">PythonZen &amp; PEP 8 検定試験</span>
                         <span class="text-[11px] font-bold text-cvBlue">Dec 2025</span>
                     </div>
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
+                    <div class="card-hover flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-cvBorder">
                         <span class="text-[13px] font-medium">Gemini Certified Student</span>
                         <span class="text-[11px] font-bold text-cvBlue">Dec 2025</span>
                     </div>
@@ -295,29 +371,29 @@
 
             <!-- Achievements -->
             <section>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-cvBlue rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-trophy"></i>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
+                        <i class="fas fa-trophy text-xs"></i>
                     </div>
                     <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Achievements</h2>
                 </div>
-                <div class="h-1 w-20 bg-cvBlue mb-6"></div>
+                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
 
-                <div class="space-y-5">
-                    <div class="bg-cvLightBlue p-4 rounded-lg border-l-4 border-cvBlue">
-                        <h3 class="font-bold text-[14px] mb-2">第26回全日本パラ・パワーリフティング国際招待選手権</h3>
-                        <p class="text-[12.5px] text-cvTextGray mb-2 italic">エンターテインメントアプリの保守・UI改修プロジェクト</p>
+                <div class="space-y-4">
+                    <div class="card-hover bg-blue-50 p-4 rounded-xl border-l-4 border-cvBlue border border-blue-100">
+                        <h3 class="font-bold text-[14px] mb-1">第26回全日本パラ・パワーリフティング国際招待選手権</h3>
+                        <p class="text-[12.5px] text-cvTextGray mb-2">大会運営支援Webアプリケーションの開発・ボランティア参加</p>
                         <a href="https://github.com/KhanhNguyenAI/Para-powerlifting-2026" target="_blank"
                             class="text-[11px] text-cvBlue hover:underline flex items-center gap-1">
                             <i class="fab fa-github"></i> KhanhNguyenAI/Para-powerlifting-2026
                         </a>
                     </div>
 
-                    <div class="bg-cvLightBlue p-4 rounded-lg border-l-4 border-cvAccent">
-                        <h3 class="font-bold text-[14px] mb-2">岡山モノづくり学生アイデア・デザインコンテスト</h3>
-                        <p class="text-[12.5px] text-cvTextGray mb-2 italic">令和7年度 優秀賞 受賞</p>
+                    <div class="card-hover bg-slate-50 p-4 rounded-xl border-l-4 border-cvAccent border border-cvBorder">
+                        <h3 class="font-bold text-[14px] mb-1">岡山モノづくり学生アイデア・デザインコンテスト</h3>
+                        <p class="text-[12.5px] text-cvTextGray mb-2">令和7年度 <span class="font-bold text-cvBlue">優秀賞</span> 受賞</p>
                         <a href="https://drive.google.com/file/d/10T_BKymRZeMz4YGg1k8GmzvpnbvLUQXc/view?usp=sharing"
-                            target="_blank" class="text-[11px] text-cvBlue hover:underline truncate block">
+                            target="_blank" class="text-[11px] text-cvBlue hover:underline flex items-center gap-1">
                             <i class="fas fa-external-link-alt"></i> View Project Document
                         </a>
                     </div>
@@ -326,19 +402,19 @@
 
             <!-- Courses -->
             <section>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 bg-cvBlue rounded-lg flex items-center justify-center text-white">
-                        <i class="fas fa-book"></i>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center text-white" style="background: linear-gradient(135deg,#2c4a70,#3d6492)">
+                        <i class="fas fa-book text-xs"></i>
                     </div>
                     <h2 class="text-cvBlue text-xl font-bold uppercase tracking-tight">Courses</h2>
                 </div>
-                <div class="h-1 w-20 bg-cvBlue mb-6"></div>
+                <div class="h-0.5 w-20 mb-5" style="background: linear-gradient(90deg,#2c4a70,#a8c4e0)"></div>
 
-                <div class="grid grid-cols-1 gap-4">
-                    <div class="flex flex-col p-3 border border-cvBorder rounded-lg">
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="card-hover flex flex-col p-3 border border-cvBorder rounded-xl bg-white">
                         <div class="flex justify-between items-start mb-1">
                             <h3 class="text-[12px] font-bold uppercase">Machine Learning for Data Science</h3>
-                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded">May 2025</span>
+                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded border border-cvBorder whitespace-nowrap ml-2">May 2025</span>
                         </div>
                         <p class="text-[11px] text-cvTextGray flex items-center gap-2">
                             Instructor:
@@ -348,10 +424,10 @@
                             </a>
                         </p>
                     </div>
-                    <div class="flex flex-col p-3 border border-cvBorder rounded-lg">
+                    <div class="card-hover flex flex-col p-3 border border-cvBorder rounded-xl bg-white">
                         <div class="flex justify-between items-start mb-1">
                             <h3 class="text-[12px] font-bold uppercase">Deep Learning for Computer Vision</h3>
-                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded">Aug 2025</span>
+                            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded border border-cvBorder whitespace-nowrap ml-2">Aug 2025</span>
                         </div>
                         <p class="text-[11px] text-cvTextGray flex items-center gap-2">
                             Instructor:
@@ -363,17 +439,17 @@
                     </div>
                 </div>
             </section>
+
         </div>
     </div>
 
-    <!-- Print Hint (Hidden on Print) -->
+    <!-- Print button -->
     <div class="fixed bottom-5 right-5 no-print">
         <button onclick="window.print()"
-            class="bg-cvBlue text-white px-6 py-3 rounded-full shadow-lg hover:bg-cvAccent transition-all flex items-center gap-2">
+            class="bg-cvBlue text-white px-6 py-3 rounded-full shadow-lg hover:bg-cvAccent transition-all flex items-center gap-2 text-sm font-medium">
             <i class="fas fa-print"></i> Print to PDF
         </button>
     </div>
 
 </body>
-
 </html>
