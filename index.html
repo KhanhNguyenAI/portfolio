@@ -138,6 +138,7 @@
     .proj-card h3 { font-size:11px; font-weight:700; color:var(--white); margin-bottom:2px; }
     .proj-card p  { font-size:10px; color:rgba(255,255,255,.5); margin-bottom:4px; }
     .proj-card span { font-size:9.5px; color:var(--sky); display:flex; align-items:center; gap:4px; }
+    .proj-qr-wrap { display:none; }  /* hidden on desktop */
     .lang-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:9px; padding:8px 12px; margin-bottom:6px; transition:all .15s; }
     .lang-row:last-child { margin-bottom:0; }
     .lang-row:hover { background:rgba(37,99,235,.15); border-color:rgba(37,99,235,.4); }
@@ -626,6 +627,11 @@
         .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
         .gal-body { padding: 14px; }
 
+        /* ── PROJECT QR (mobile only) ── */
+        .proj-qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 10px; padding: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; }
+        .proj-qr-label { font-size: 10px; font-weight: 600; color: var(--sky); letter-spacing: .5px; }
+        .proj-qr-img { width: 130px; height: 130px; border-radius: 8px; background: white; padding: 4px; }
+
         /* ── PRINT BUTTON ── */
         .print-btn { display: none; }
     }
@@ -692,7 +698,12 @@
               <div class="s-ttl"><i class="fab fa-github"></i> Projects</div>
               <a href="https://github.com/KhanhNguyenAI/book" target="_blank" class="proj-card"><h3>Book Management</h3><p>AI / NLP Search system</p><span><i class="fab fa-github"></i> /book</span></a>
               <a href="https://github.com/KhanhNguyenAI/oldshop" target="_blank" class="proj-card"><h3>OldShop E-commerce</h3><p>Full-stack React / TypeScript</p><span><i class="fab fa-github"></i> /oldshop</span></a>
-              <a href="https://project-nu-gold.vercel.app/" target="_blank" class="proj-card"><h3>就職サポートアプリ</h3><p>就活管理 Web アプリ</p><span><i class="fab fa-github"></i> /job-support-app</span></a>
+              <a href="https://khanhnguyenai.github.io/project/" target="_blank" class="proj-card"><h3>就職サポートアプリ</h3><p>就活管理 Web アプリ</p><span><i class="fas fa-external-link-alt"></i> khanhnguyenai.github.io/project</span></a>
+              <!-- QR code: mobile only -->
+              <div class="proj-qr-wrap no-print">
+                <div class="proj-qr-label">📱 スマホでアクセス</div>
+                <img class="proj-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://khanhnguyenai.github.io/project/&margin=10" alt="QR Code">
+              </div>
             </section>
             <section>
               <div class="s-ttl"><i class="fas fa-language"></i> Languages</div>
@@ -1116,8 +1127,8 @@
   </div>
 </div>
 
-<!-- Project detail floating bubble -->
-<button class="pj-bubble-btn no-print" onclick="openProjDetail()">
+<!-- Project floating bubble → direct link -->
+<button class="pj-bubble-btn no-print" onclick="window.open('https://khanhnguyenai.github.io/project/','_blank')">
   <span class="pj-icon">💼</span>
   <span class="pj-label">Project</span>
 </button>
@@ -1149,25 +1160,6 @@
   </div>
 </div>
 
-<!-- Project detail overlay -->
-<div class="pj-overlay no-print" id="projOverlay" onclick="if(event.target===this)closeProjDetail()">
-  <div class="pj-panel">
-    <div class="pj-panel-hd">
-      <div>
-        <div class="pj-panel-tag">Project · 就職サポートアプリ</div>
-        <div class="pj-panel-title">「IT学習コーチ」開発について</div>
-      </div>
-      <button class="pj-panel-close" onclick="closeProjDetail()"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="pj-panel-body">
-      <div class="pj-panel-para">「IT学習コーチ」というアプリは、IT資格の学習支援と、自分自身の就職活動をサポートするために開発しました。</div>
-      <div class="pj-panel-para">学習を進める中で、「必要な情報が分散していること」や、「勉強・就職活動・情報整理を同時に行う難しさ」を感じたことが、開発のきっかけです。</div>
-      <div class="pj-panel-para">そこで、自分が本当に必要だと感じた機能をまとめ、学習管理や情報整理、効率的な学習をサポートできるアプリとして制作しました。</div>
-      <div class="pj-panel-para">また、自分自身の課題を解決するだけではなく、同じようにIT資格の勉強や就職活動に取り組む人たちにも役立つものにしたいと考えております。</div>
-      <div class="pj-panel-para">この開発を通じて、技術だけではなく、「実際の課題やニーズから考えること」の重要性を学ぶことができました。</div>
-    </div>
-  </div>
-</div>
 
 <!-- Para Powerlifting detail overlay -->
 <div class="ach-overlay no-print" id="paraOverlay" onclick="if(event.target===this)closeParaDetail()">
@@ -1274,7 +1266,7 @@
     document.getElementById('lb-img').src = '';
   }
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeLb(); closeGallery(); closeFriends(); closeKnowledge(); closeParaDetail(); closeProjDetail(); }
+    if (e.key === 'Escape') { closeLb(); closeGallery(); closeFriends(); closeKnowledge(); closeParaDetail(); }
   });
 
   const galPhotos = [
@@ -1421,16 +1413,7 @@
     document.body.style.overflow = '';
   }
 
-  function openProjDetail() {
-    document.getElementById('projOverlay').classList.add('on');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeProjDetail() {
-    document.getElementById('projOverlay').classList.remove('on');
-    document.body.style.overflow = '';
-  }
-
-  function openParaDetail() {
+function openParaDetail() {
     document.getElementById('paraOverlay').classList.add('on');
     document.body.style.overflow = 'hidden';
   }
