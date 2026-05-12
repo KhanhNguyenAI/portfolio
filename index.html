@@ -418,6 +418,10 @@
         .kb-bubble-btn .kb-label { font-size:7px; }
         .kb-bubble-btn::after { display:none; }
         .kb-body { padding:20px 16px; gap:20px; grid-template-columns:1fr; }
+        .fz-bubble-btn { right:16px; top:auto; bottom:260px; width:68px; height:68px; }
+        .fz-bubble-btn .fz-globe { font-size:22px; }
+        .fz-bubble-btn .fz-label { font-size:7px; }
+        .fz-bubble-btn::after { display:none; }
     }
 
     /* ═══════════════ PROJECT BUBBLE ═══════════════ */
@@ -552,6 +556,79 @@
     /* ═══════════════ PRINT BUTTON ═══════════════ */
     .print-btn { position:fixed; bottom:24px; right:24px; background:linear-gradient(135deg,var(--accent),#1d4ed8); color:white; border:none; padding:12px 22px; border-radius:30px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 8px 24px rgba(37,99,235,.45); display:flex; align-items:center; gap:8px; transition:all .2s; font-family:inherit; }
     .print-btn:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(37,99,235,.55); }
+
+    /* ═══════════════ MOBILE RESPONSIVE (≤ 768px) ═══════════════ */
+    @media (max-width: 768px) {
+        body { padding: 12px 0 90px; }
+
+        /* ── Book engine ── */
+        .book-wrapper { width: 100%; padding: 0 8px; box-sizing: border-box; }
+        .book-scene { width: 100%; height: auto !important; overflow: visible; border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,.35); }
+        .page-slide { position: relative !important; height: auto !important; overflow: visible !important; transform: none !important; transition: none !important; display: none; width: 100%; }
+        .page-slide.mobile-active { display: block !important; }
+
+        /* ── Nav buttons → fixed bottom corners ── */
+        .nav-btn { position: fixed; bottom: 22px; top: auto !important; transform: none !important; width: 46px; height: 46px; font-size: 17px; z-index: 600; border-radius: 50%; }
+        .nav-btn:hover { transform: scale(1.1) !important; }
+        .nav-btn.next-btn { right: 18px; }
+        .nav-btn.back-btn { left: 18px; }
+
+        /* ── Page dots → fixed bottom center ── */
+        .page-dots { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); margin: 0; z-index: 600; background: rgba(0,0,0,.35); padding: 6px 12px; border-radius: 20px; }
+
+        /* ── CV PAGE ── */
+        .cv { flex-direction: column; min-height: unset; border-radius: 14px; }
+        .sidebar { width: 100%; border-radius: 14px 14px 0 0; }
+        .hero { padding: 24px 20px 20px; }
+        .avatar-ring img { width: 80px; height: 80px; }
+        .hero-name { font-size: 14px; letter-spacing: 1px; }
+        .sidebar-body { padding: 16px 18px 20px; gap: 16px; }
+        .s-ttl { font-size: 8.5px; margin-bottom: 8px; }
+        .main { width: 100%; border-radius: 0 0 14px 14px; }
+        .mbody { padding: 20px 18px 28px; gap: 20px; }
+        .sec-head { margin-bottom: 10px; }
+        .cert-card, .course-card { flex-direction: column; align-items: flex-start; gap: 6px; }
+        .crs-date { align-self: flex-start; }
+        .thought-bubble { width: 120px; font-size: 9px; padding: 8px 10px; right: 6px; top: 6px; line-height: 1.7; }
+        .thought-bubble::after { display: none; }
+
+        /* ── JOURNEY PAGE ── */
+        .journey { min-height: unset; border-radius: 14px; }
+        .j-hero { padding: 20px 18px 16px; border-radius: 14px 14px 0 0; }
+        .j-hero-title { font-size: 22px; }
+        .j-content { flex-direction: column; }
+        .j-story { width: 100%; padding: 16px 14px 0 18px; }
+        .j-text { font-size: 11px; }
+        .j-visual { width: 100%; padding: 12px 14px 14px; }
+        .pgrid { grid-template-columns: 1fr 1fr; gap: 5px; }
+        .j-vid video { max-height: 180px; }
+        .j-close { margin: 0 14px 14px; }
+        .more-btn { font-size: 10px; padding: 8px 14px; }
+
+        /* ── CAREER PAGE ── */
+        .career { min-height: unset; border-radius: 14px; animation: none; }
+        .ca-hero { padding: 20px 18px 16px; border-radius: 14px 14px 0 0; }
+        .ca-hero-title { font-size: 22px; }
+        .ca-content { flex-direction: column; }
+        .ca-story { width: 100%; padding: 16px 14px 0 18px; }
+        .ca-text { font-size: 11px; }
+        .ca-visual { width: 100%; padding: 12px 14px 14px; }
+        .ca-close { margin: 0 14px 14px; }
+
+        /* ── FLOATING BUBBLES → hide on mobile ── */
+        .fz-bubble-btn, .kb-bubble-btn, .pj-bubble-btn { display: none !important; }
+        .status-bubble { display: none !important; }
+
+        /* ── OVERLAYS ── */
+        .ach-panel-body { flex-direction: column; padding: 16px; }
+        .ach-panel-img { width: 100%; }
+        .pj-panel-body { padding: 16px; }
+        .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .gal-body { padding: 14px; }
+
+        /* ── PRINT BUTTON ── */
+        .print-btn { display: none; }
+    }
 
     @media print {
         body { background:white !important; padding:0 !important; }
@@ -1145,6 +1222,13 @@
 
 <script>
   let currentPage = 1;
+  const isMobile = () => window.innerWidth <= 768;
+
+  function syncMobilePages(n) {
+    document.querySelectorAll('.page-slide').forEach((p, i) => {
+      p.classList.toggle('mobile-active', i + 1 === n);
+    });
+  }
 
   function goPage(n) {
     const scene = document.getElementById('scene');
@@ -1152,6 +1236,7 @@
     if (n === 2) scene.classList.add('on-p2');
     if (n === 3) scene.classList.add('on-p3');
     currentPage = n;
+    if (isMobile()) syncMobilePages(n);
     document.getElementById('nextBtn').classList.toggle('hide', n === 3);
     document.getElementById('backBtn').classList.toggle('show', n > 1);
     ['dot1','dot2','dot3'].forEach((id, i) => {
@@ -1162,6 +1247,13 @@
 
   function slideNext() { goPage(Math.min(currentPage + 1, 3)); }
   function slideBack() { goPage(Math.max(currentPage - 1, 1)); }
+
+  // Init mobile engine on load + resize
+  function initMobile() {
+    if (isMobile()) syncMobilePages(currentPage);
+  }
+  window.addEventListener('load', initMobile);
+  window.addEventListener('resize', initMobile);
 
   // Match scene height to tallest page
   window.addEventListener('load', () => {
